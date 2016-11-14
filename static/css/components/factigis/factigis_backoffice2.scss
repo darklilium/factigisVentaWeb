@@ -1,0 +1,242 @@
+//CSS FOR FACTIGIS_BACKOFFICE 2 (3/3)
+
+$colorBackground: #2e353f;
+$colorCHQRED: #da291c;
+$colorGray: #808095;
+
+a {
+    color: $colorCHQRED;
+}
+
+#factigis_bo2_map_zoom_slider {
+  top: 20px;
+  right: 20px !important;
+  left: initial;
+  z-index: 5 !important;
+}
+
+#myFactigis_BackOffice_historico {
+  background-color: #ffffff;
+}
+
+
+
+#BMToggle2{
+  display: flex;
+  position: absolute;
+  z-index: 5;
+  margin-left: 1em;
+  align-self: flex-end;
+  padding-bottom: 1em;
+}
+
+.loader {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('images/Preloader_3.gif') 50% 50% no-repeat rgb(249,249,249);
+}
+
+.factigisBO1_imgLoader{
+  margin-left: 1em;
+  flex-direction: row;
+}
+
+.wrapper_factigis_bo2{
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  height: 100vh;
+  align-content: flex-start;;
+}
+
+.griddle th  input{
+  width: 80%;
+}
+
+div strong{
+  font-size: 12px;
+}
+
+.factigis_bo2-h2{
+  background-color: inherit;
+  margin-top: 0px;
+  padding-top: 0.7em;
+  padding-left: 0.5em;
+  font-weight: 100;
+  color: ghostwhite;
+  font-size: medium;
+}
+
+.factigisBO2_h1{
+  background-color: $colorBackground;
+  color: ghostwhite;
+  margin-top: 0px;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+  font-size:13px;
+  font-weight: 100;
+  padding-bottom: 0.3em;
+  display: flex;
+  width: 100%;
+  box-shadow: 0px 1px 5px #79848e;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 0;
+}
+
+.factigis_h1_edited{
+  justify-content: center;
+}
+.factigisBO2_wrapper_top{
+  display: flex;
+  width: 100%;
+  background-color: #ffffff;
+  justify-content: space-between;
+
+}
+
+.bo2_table{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.wrapper_mid{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+
+}
+.wrapper_mid-left{
+  display: flex;
+  width: 50%;
+  flex-wrap: wrap;
+  flex-direction: column;
+  background: ghostwhite;
+  align-items: stretch;
+
+  margin: 0em;
+}
+
+.wrapper_mid-split {
+  display: flex;
+}
+
+.wrapper_mid_splitbot{
+  margin-bottom: 0;
+}
+
+.wrapper_mid-split-1{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+.factigisBO2_wrapper_mid-right{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  background-color: ghostwhite;
+
+}
+
+
+.factigis_bo2_map{
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.wrapper_bot{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #282d2d;
+  bottom: 0px;
+  position: relative;
+
+  padding-top: 0em;
+}
+
+.wrapper_bot_title{
+  display: flex;
+  width: 100%;
+}
+
+.wrapper_bot_content {
+  display: flex;
+  flex-direction: row;
+  width: 75%;
+  align-self: center;
+}
+
+.factigis_bo2_wrapper-zonas{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 1em;
+}
+
+.marginRight05{
+  margin-right: 0.5em;
+}
+.factigis_bo2_cbEstado{
+  width: 100%;
+}
+
+
+.bodybackoffice_factigis{
+  background-color:  #282d2d;
+}
+
+.factigis_bo2-b{
+  margin-left: 0.3em;
+}
+
+.factigis_bo2-h8{
+  color: ghostwhite;
+  display: flex;
+  align-items: center;
+  margin-right: 1em;
+  font-weight: 600;
+}
+
+.ReactModalPortal{
+  z-index: 5;
+  position: absolute;
+}
+
+[data-title='Observacion'] {
+width: 40%;
+}
+
+[data-title='Estado Tramite'] {
+width: 10%;
+}
+
+[data-title='Folio'] {
+width: 10%;
+}
+
+[data-title='Zona'] {
+width: 20%;
+}
+
+.griddle-container{
+  background-color: white;
+}
+
+
+.standard-row{
+  font-size: 11px;
+}
+
+h8{
+  font-size: 12px;
+}

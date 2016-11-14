@@ -1,0 +1,321 @@
+//CSS FOR FACTIGIS_ADD (1/3)
+
+$factigis_bgColor : ghostwhite;
+
+.LayerList__legend{
+  font-size: 11px;
+}
+
+//Map
+.esriSimpleSliderTL {
+    top: 2em;
+    visibility: visible;
+    float: right !important;
+    position: relative;
+    margin-right: 3em;
+}
+
+.arcgisSearch .searchGroup{
+      margin-right: 5em;
+}
+
+.map .esriMapContainer{
+  height: 100%
+}
+//HTML
+.bodyfactigis{
+  width: 100%;
+  height: 100vh;
+
+}
+
+//Factigis frontOffice
+
+.myFactigis_FrontOffice{
+  height: inherit;
+}
+
+.factigis_navElements{
+  display: flex;
+    flex-direction: row;
+}
+
+.factigis_top-right{
+  display: flex;
+    justify-content: center;
+    align-content: center;
+    position: absolute;
+    right: 1em;
+}
+.factigis_whologged{
+  display: flex;
+  flex-direction: row;
+  margin: 0.5em;
+}
+.wrapper_factigis{
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+}
+.factigis_map_div {
+  position: relative;
+  max-height: 945px;
+  width: 100%;
+  min-height: 800px;
+  height: 100%;
+}
+
+.factigis_f{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.wrapper_factibilidadLeft{
+
+  width: 40%;
+  background: $factigis_bgColor;
+
+  display: flex;
+  flex-direction: column;
+}
+.wrapper_factibilidadRight{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: inherit;
+  width: 60%;
+}
+
+.wrapper_factibilidadTop{
+  display: flex;
+  flex-direction: row;
+  background-color: #e8e8e8;
+  justify-content: space-between;
+}
+.breadcrumb {
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  -webkit-box-shadow: -1px 4px 35px -5px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: -1px 4px 35px -5px rgba(0, 0, 0, 0.52);
+  list-style: none;
+  background-color: #f5f5f5;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  height: 40px;
+  box-shadow: 0px 1px 5px rgba(190, 190, 190, 0.46);
+  -webkit-box-shadow: 0px 1px 5px rgba(190, 190, 190, 0.46);
+  -moz-box-shadow: 0px 1px 5px rgba(190, 190, 190, 0.46);
+  -webkit-backface-visibility: hidden;
+  width: 100%;
+  margin: 0;
+}
+
+.factigis_search{
+      display: flex !important;
+}
+.wrapper_factibilidadContent{
+  display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.wrapper_factibilidadCenter{
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
+  height: inherit;
+  position: absolute;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.BasemapToggle{
+  display: flex;
+  width: auto;
+  height: auto;
+  z-index: 2;
+  position: absolute;
+  bottom: 1.3em;
+  left: 1em;
+}
+
+
+//media screens for responsive design 'till 640px max'
+@media screen and (min-width: 0px) and (max-width: 640px) and (orientation: portrait) {
+  .bodyfactigis {
+    width: 100%;
+    height: inherit;
+  }
+  .wrapper_factibilidadTop {
+      display: flex;
+      flex-direction: row;
+      background-color: whitesmoke;
+      justify-content: space-between;
+  }
+  .wrapper_factibilidadContent {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+
+  .arcgisSearch .searchGroup {
+    margin-right: 1em;
+  }
+
+  .wrapper_factigis {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+  .wrapper_factibilidadLeft {
+    width: 100%;
+    background: $factigis_bgColor;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .wrapper_factibilidadRight {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      height: inherit;
+      width: 100%;
+      height: 320px;
+  }
+
+  .factigis_map_div {
+    position: relative;
+    max-height: 945px;
+    width: 100%;
+    min-height: 945px;
+    height: 100%;
+  }
+
+}
+
+//media screens for responsive design 'till 640px max'
+@media screen and (min-width: 800px) and (max-width: 1024px) and (orientation: portrait) {
+  .bodyfactigis {
+    width: 100%;
+    height: inherit;
+  }
+  .wrapper_factibilidadTop {
+      display: flex;
+      flex-direction: row;
+      background-color: whitesmoke;
+      justify-content: space-between;
+  }
+  .wrapper_factibilidadContent {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+
+  .arcgisSearch .searchGroup {
+    margin-right: 1em;
+  }
+
+  .wrapper_factigis {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+  .wrapper_factibilidadLeft {
+    width: 100%;
+    background: $factigis_bgColor;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .wrapper_factibilidadRight {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      height: inherit;
+      width: 100%;
+      height: 320px;
+  }
+
+  .factigis_map_div {
+    position: relative;
+    max-height: 945px;
+    width: 100%;
+    min-height: 945px;
+    height: 100%;
+  }
+}
+
+//media screens for responsive design 'till 640px max'
+@media screen and (min-width: 800px) and (max-width: 1024px) and (orientation: landscape) {
+  .bodyfactigis {
+    width: 100%;
+    height: inherit;
+  }
+  .wrapper_factibilidadTop {
+      display: flex;
+      flex-direction: row;
+      background-color: whitesmoke;
+      justify-content: space-between;
+  }
+  .wrapper_factibilidadContent {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+  .arcgisSearch .searchGroup {
+    margin-right: 1em;
+  }
+
+  .wrapper_factigis {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+  .wrapper_factibilidadLeft {
+    width: 40%;
+    background: $factigis_bgColor;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .wrapper_factibilidadRight {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      height: inherit;
+      width: 60%;
+      height: 320px;
+  }
+
+  .factigis_map_div {
+    position: relative;
+    max-height: 945px;
+    width: 100%;
+    min-height: 945px;
+    height: 100%;
+  }
+}
+
+.factigisDir_searchTitle{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.factigisDir_imgLoader{
+  height: 0.8em;
+  width: 1em;
+  display: none;
+	margin-right: 1em;
+}
+
+.ReactModal__Overlay{
+  z-index: 50;
+}
+@import "components/factigis/factigis_add.scss";
+@import "components/layerlist-component";
+@import "components/factigis/factigis_busqueda.scss";

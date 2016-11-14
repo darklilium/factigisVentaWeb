@@ -1,0 +1,19 @@
+.bodyfactigisCarta { display: flex; justify-content: center; align-content: space-between; flex-wrap: wrap; }
+
+.wrapper_factigisCarta { display: flex; justify-content: center; flex-direction: column; flex-wrap: wrap; align-items: center; }
+
+.factigisCarta_img { width: 200px; height: 53px; display: flex; align-items: center; margin-left: -2em; margin-top: 2em; }
+
+.factigisCarta_h4 { display: flex; align-self: flex-end; margin-right: 10em; font-size: 10px; }
+
+.factigisCarta_h3 { margin-top: 4em; text-decoration: underline; font-weight: 700; margin-bottom: 2em; font-size: 14px; }
+
+.factigisCarta_p { margin-left: 5em; margin-right: 6em; text-align: justify; font-size: 12px; margin-top: 2em; }
+
+.p4 { align-self: flex-start; }
+
+.p5 { margin-top: 10em; text-align: center; }
+
+.factigisCarta_fecha { display: flex; flex-direction: row; align-self: flex-start; margin-left: 5em; margin-top: 5em; font-size: 10px; }
+
+.factigisCarta_pie { align-self: flex-end; margin-right: 6em; margin-top: 5em; position: absolute; bottom: 6em; width: 25%; font-size: 8px; }

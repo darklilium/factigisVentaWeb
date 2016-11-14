@@ -1,0 +1,290 @@
+//CSS FOR FACTIGIS_ADD (1/3)
+$colorBackground: #2e353f;
+$colorCHQRED: #da291c;
+$colorGray: #808095;
+
+a {
+		color: $colorCHQRED;
+}
+
+
+
+.loader {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url('images/Preloader_3.gif') 50% 50% no-repeat rgb(249,249,249);
+}
+
+.factigisAdd_searchTitle{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.factigisAdd_imgLoader{
+  height: 0.8em;
+  width: 1em;
+  display: none;
+	margin-right: 1em;
+}
+
+.factigis_groupEspecial{
+  padding-top: 1.4em;
+     display: flex;
+     align-items: center;
+}
+
+
+.wrapper_factigisAdd{
+  display: flex;
+  flex-direction: column;
+
+  padding: 1em;
+}
+
+
+.factigis_hr{
+  border: 1px;
+  border-style: inset;
+  width: 100%;
+  margin-bottom: 0;
+	margin-top: -3px;
+}
+
+
+.factigis_groupbox{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.factigis-input{
+  width: 85%;
+}
+
+.factigis_submitButton{
+  width: 100%;
+	margin-right: 1em;
+	background-color: $colorCHQRED;
+  color: white;
+}
+
+.factigisBtnAgregar:hover {
+    color: #fff;
+    background-color: #8c0000;
+    border-color: #750000;
+}
+
+.factigis-selectFromMapButton{
+  width: 3em;
+  margin: 0 0 0 0.5em;
+}
+
+
+.factigis_hr-subtitle {
+
+    border-style: ridge;
+    width: 100%;
+    color:rgba(0, 0, 0, 0.04);
+
+    margin: 0px;
+}
+
+/* Checkbox CSS */
+/* Icons :To start, hide the original checkbox.*/
+/* Hide the Ordinary Checkbox */
+.factigis_ul{
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+
+.factigis_BigGroupbox{
+  display: flex;
+  flex-direction: column;
+  padding: 0.6em 1em 0.8em 1em;
+  font-size: 11px;
+}
+
+.factigis_BigGroupbox2{
+  display: flex;
+flex-direction: column;
+font-size: 10px;
+}
+
+.factigis_selectInput{
+  width: 99%;
+}
+
+.factigis_selectEmpalme{
+  max-width: 100%;
+}
+
+.factigis_groupbox-box{
+  width: 50%
+}
+input[type="checkbox"] {
+    display: none;
+}
+/* Checkbox Icons */
+label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    padding: 16px 28px 0 0;
+    font-weight: normal;
+
+}
+
+label:before, label:after {
+    font-family: FontAwesome;
+    font-size: 0px;
+    /*absolutely positioned*/
+    position: absolute; top: 0; left: -49px; right: 10px;
+}
+
+label:before {
+    content: '\f096'; /*checkbox unchecked */
+}
+label:after {
+    content: '\f00c'; /*checkbox checked*/
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0.5;
+    font-size: 15px;
+    top: 16px;
+    left: -25px;
+    color: #1EAB06;
+
+-webkit-transition: all 0.50s;
+    -moz-transition: all 0.50s;
+    -o-transition: all 0.50s;
+     transition: all 0.50s;
+}
+
+/* Animating the Checkbox Icon */
+input[type="checkbox"]:checked + label:after {
+    max-width: 25px;
+    opacity: 1;
+    margin-right: 90px;
+}
+
+.factigis__toggleBtnLabel{
+  display: flex;
+  flex-direction: inherit;
+  align-items: center;
+  padding-left: 1em;
+  display: none;
+}
+
+.factigis_btnSelectCliente{
+  color: black;
+  border-color: black;
+}
+.factigis_btnSelectCalle{
+  color: black;
+  border-color: black;
+}
+
+.factigis_btnSelectPoste{
+  color: black;
+  border-color: black;
+}
+.factigis_btnSelectTramo{
+  color: black;
+  border-color: black;
+}
+.factigis_btnSelectDireccion{
+  color: black;
+  border-color: black;
+  border-style: solid;
+}
+
+.factigis_input-solo{
+  width: 99%;
+  display: flex;
+  height: 3.5em;
+}
+
+.factigis_group{
+  width: 100%;
+}
+.factigisTramo2{
+  width: 90%;
+  height: 3.2em;
+}
+
+.factigis_radiobutton{
+  margin-right: 0.3em;
+  margin-top: 0;
+}
+
+.factigis_radiobuttonGroup{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.factigis_buttons{
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 1em;
+}
+
+// TAB DIRECCIONES
+
+.factigis_addressGroup{
+  width: 100%;
+}
+
+.factigis_p{
+
+}
+.obligatorio{
+  margin-bottom: 1em;
+display: flex;
+flex-wrap: wrap;
+justify-content: flex-start;
+font-size: xx-small;
+}
+
+.btn-info{
+	background-color: $colorGray;
+}
+
+.factigisBtnLimpiar:hover{
+	background-color: $colorBackground
+}
+.factigisBtnAgregar:hover{
+	color: #fff;
+  background-color: #8c0000;
+  border-color: #750000;
+}
+//media screens for responsive design 'till 640px max'
+@media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: portrait)  {
+  .factigis_ul{
+    flex-direction: column;
+  }
+}
+@media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: landscape)  {
+  .factigis_ul{
+    flex-direction: column;
+  }
+}
+@media screen and (min-width: 1px) and (max-width: 640px) and (orientation: portrait)  {
+  .factigisTramo2{
+    width: 100%;
+    height: 3.2em;
+  }
+}
+
+@media screen and (min-width: 1px) and (max-width: 640px) and (orientation: landscape)  {
+  .factigisTramo2{
+    width: 100%;
+    height: 3.2em;
+  }
+}

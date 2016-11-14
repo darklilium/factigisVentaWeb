@@ -1,0 +1,197 @@
+.breadcrumb { justify-content: flex-start; display: flex; align-items: center; -webkit-box-shadow: -1px 4px 35px -5px rgba(0, 0, 0, 0.52); -moz-box-shadow: -1px 4px 35px -5px rgba(0, 0, 0, 0.52); list-style: none; background-color: #f5f5f5; background: #fff; border-bottom: 1px solid #ddd; height: 40px; box-shadow: 0px 1px 5px rgba(190, 190, 190, 0.46); -webkit-box-shadow: 0px 1px 5px rgba(190, 190, 190, 0.46); -moz-box-shadow: 0px 1px 5px rgba(190, 190, 190, 0.46); -webkit-backface-visibility: hidden; width: 100%; margin: 0; }
+
+.factigis_top-right { display: flex; justify-content: center; align-content: center; position: absolute; right: 1em; }
+
+#factigis_bo1_map_zoom_slider { top: 20px; right: 20px !important; left: initial; z-index: 5 !important; }
+
+.factigis_whologged { display: flex; align-items: center; margin-right: 1em; }
+
+.btnLogoff { color: #da291c; background-color: #ffffff; border-color: #808095; }
+
+.btn-info:hover { color: #fff; background-color: #2e353f; }
+
+a { color: #da291c; }
+
+#myFactigis_BackOffice { background-color: #ffffff; }
+
+#BMToggle { display: flex; position: absolute; z-index: 5; margin-left: 1em; align-self: flex-end; padding-bottom: 1em; }
+
+.loader { position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 9999; background: url("images/Preloader_3.gif") 50% 50% no-repeat #f9f9f9; }
+
+.factigisBO_top { display: flex; width: 100%; background-color: #ffffff; justify-content: space-between; position: absolute; }
+
+.factigisBO_imgLoader { margin-left: 1em; flex-direction: row; }
+
+.factigisBO_table { display: flex; width: 100%; margin-top: 40px; }
+
+.wrapper_factigisBO { display: flex; flex-wrap: wrap; position: relative; align-content: center; }
+
+.griddle th input { width: 80%; }
+
+div strong { font-size: 12px; }
+
+.factigis_bo1-h2 { background-color: inherit; margin-top: 0px; padding-top: 0.7em; padding-left: 0.5em; font-weight: 100; color: ghostwhite; font-size: medium; }
+
+.factigis_bo1-h1 { background-color: #2e353f; color: ghostwhite; margin-top: 0px; padding-top: 0.5em; padding-left: 0.5em; font-size: larger; font-weight: 100; padding-bottom: 0.3em; display: flex; width: 100%; box-shadow: 0px 1px 5px #79848e; border-bottom: 1px solid #ddd; }
+
+.factigis_h1_edited { justify-content: center; }
+
+.wrapper_top { display: flex; width: 100%; background-color: #282d2d; justify-content: space-between; margin-left: 1em; margin-right: 1em; }
+
+.wrapper_mid { display: flex; width: 100%; flex-direction: row; }
+
+.wrapper_mid-left { display: flex; width: 50%; flex-wrap: wrap; flex-direction: column; background: ghostwhite; align-items: stretch; justify-content: space-between; margin: 0em; }
+
+.wrapper_mid-split { display: flex; }
+
+.wrapper_mid_splitbot { margin-bottom: 2em; }
+
+.wrapper_mid-split-1 { display: flex; flex-direction: column; width: 50%; margin-left: 1em; margin-bottom: 1em; }
+
+.factigisBO_wrapper_mid-right { display: flex; flex-direction: column; width: 50%; background-color: ghostwhite; }
+
+.factigis_bo1_map { height: 70%; display: flex; }
+
+.factigisBO_wrapper_bot { width: 100%; display: flex; flex-direction: column; background-color: #314658; bottom: 0px; position: relative; padding-bottom: 1em; padding-top: 0em; }
+
+.wrapper_bot_title { display: flex; width: 100%; }
+
+.wrapper_bot_content { display: flex; flex-direction: row; width: 75%; align-self: center; }
+
+.factigis_bo1_wrapper-zonas { display: flex; flex-direction: row; justify-content: space-around; margin: 1em; }
+
+.marginRight05 { margin-right: 0.5em; }
+
+.factigis_bo1_cbEstado { width: 100%; }
+
+.factigisBO1_body { background-color: #314658; }
+
+.factigis_bo1-b { margin-left: 0.3em; }
+
+.factigis_bo1-h8 { color: ghostwhite; display: flex; align-items: center; margin-right: 1em; font-weight: 600; }
+
+.ReactModalPortal { z-index: 5; position: absolute; }
+
+.standard-row { font-size: smaller; }
+
+.factigis_rows { display: flex; flex-direction: row; justify-content: center; }
+
+.factigis_row1 { display: flex; flex-direction: column; margin-left: 1em; }
+
+.factigis_row2 { display: flex; flex-direction: column; width: 30%; margin-left: 1em; }
+
+.factigis_row3 { display: flex; flex-direction: column; justify-content: flex-end; margin-left: 1em; }
+
+.factigis_bo_btnModified { width: 100px; height: 36px; }
+
+.factigis_bo_txt { height: 36px; margin-right: 1em; }
+
+a { color: #da291c; }
+
+#factigis_bo2_map_zoom_slider { top: 20px; right: 20px !important; left: initial; z-index: 5 !important; }
+
+#myFactigis_BackOffice_historico { background-color: #ffffff; }
+
+#BMToggle2 { display: flex; position: absolute; z-index: 5; margin-left: 1em; align-self: flex-end; padding-bottom: 1em; }
+
+.loader { position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 9999; background: url("images/Preloader_3.gif") 50% 50% no-repeat #f9f9f9; }
+
+.factigisBO1_imgLoader { margin-left: 1em; flex-direction: row; }
+
+.wrapper_factigis_bo2 { display: flex; flex-wrap: wrap; position: relative; height: 100vh; align-content: flex-start; }
+
+.griddle th input { width: 80%; }
+
+div strong { font-size: 12px; }
+
+.factigis_bo2-h2 { background-color: inherit; margin-top: 0px; padding-top: 0.7em; padding-left: 0.5em; font-weight: 100; color: ghostwhite; font-size: medium; }
+
+.factigisBO2_h1 { background-color: #2e353f; color: ghostwhite; margin-top: 0px; padding-top: 0.5em; padding-left: 0.5em; font-size: 13px; font-weight: 100; padding-bottom: 0.3em; display: flex; width: 100%; box-shadow: 0px 1px 5px #79848e; border-bottom: 1px solid #ddd; margin-bottom: 0; }
+
+.factigis_h1_edited { justify-content: center; }
+
+.factigisBO2_wrapper_top { display: flex; width: 100%; background-color: #ffffff; justify-content: space-between; }
+
+.bo2_table { display: flex; width: 100%; flex-direction: column; }
+
+.wrapper_mid { display: flex; width: 100%; flex-direction: row; }
+
+.wrapper_mid-left { display: flex; width: 50%; flex-wrap: wrap; flex-direction: column; background: ghostwhite; align-items: stretch; margin: 0em; }
+
+.wrapper_mid-split { display: flex; }
+
+.wrapper_mid_splitbot { margin-bottom: 0; }
+
+.wrapper_mid-split-1 { display: flex; flex-direction: column; width: 50%; margin-left: 1em; margin-bottom: 1em; }
+
+.factigisBO2_wrapper_mid-right { display: flex; flex-direction: column; width: 50%; background-color: ghostwhite; }
+
+.factigis_bo2_map { height: 100%; display: flex; flex-wrap: wrap; }
+
+.wrapper_bot { width: 100%; display: flex; flex-direction: column; background-color: #282d2d; bottom: 0px; position: relative; padding-top: 0em; }
+
+.wrapper_bot_title { display: flex; width: 100%; }
+
+.wrapper_bot_content { display: flex; flex-direction: row; width: 75%; align-self: center; }
+
+.factigis_bo2_wrapper-zonas { display: flex; flex-direction: row; justify-content: space-around; margin: 1em; }
+
+.marginRight05 { margin-right: 0.5em; }
+
+.factigis_bo2_cbEstado { width: 100%; }
+
+.bodybackoffice_factigis { background-color: #282d2d; }
+
+.factigis_bo2-b { margin-left: 0.3em; }
+
+.factigis_bo2-h8 { color: ghostwhite; display: flex; align-items: center; margin-right: 1em; font-weight: 600; }
+
+.ReactModalPortal { z-index: 5; position: absolute; }
+
+[data-title='Observacion'] { width: 40%; }
+
+[data-title='Estado Tramite'] { width: 10%; }
+
+[data-title='Folio'] { width: 10%; }
+
+[data-title='Zona'] { width: 20%; }
+
+.griddle-container { background-color: white; }
+
+.standard-row { font-size: 11px; }
+
+h8 { font-size: 12px; }
+
+.griddle-container { border: 1px solid #DDD; }
+
+.griddle .top-section { clear: both; display: table; width: 100%; }
+
+.griddle .griddle-filter { float: left; width: 50%; text-align: left; color: #222; min-height: 1px; }
+
+.griddle .griddle-settings-toggle { float: left; width: 50%; text-align: right; }
+
+.griddle .griddle-settings { background-color: #FFF; border: 1px solid #DDD; color: #222; padding: 10px; margin-bottom: 10px; }
+
+.griddle .griddle-settings .griddle-columns { clear: both; display: table; width: 100%; border-bottom: 1px solid #EDEDED; margin-bottom: 10px; }
+
+.griddle .griddle-settings .griddle-column-selection { float: left; width: 20%; }
+
+.griddle table { width: 100%; table-layout: fixed; }
+
+.griddle th { background-color: #EDEDEF; border: 0px; border-bottom: 1px solid #DDD; color: #222; padding: 5px; }
+
+.griddle td { padding: 5px; background-color: #FFF; border-top-color: #DDD; color: #222; }
+
+.griddle .footer-container { padding: 0px; background-color: #EDEDED; border: 0px; color: #222; }
+
+.griddle .griddle-previous, .griddle .griddle-page, .griddle .griddle-next { float: left; width: 33%; min-height: 1px; margin-top: 5px; }
+
+.griddle .griddle-page { text-align: center; }
+
+.griddle .griddle-next { text-align: right; }
+
+.LayerList__wrapper { z-index: 4; margin-top: 3.5em; position: absolute; padding: 0.5em; margin-left: 1em; display: inline-block; width: auto; border-radius: 0; background-color: rgba(255, 255, 255, 0.6); }
+
+.LayerList__checkbox-div { display: flex; }
+
+.LayerList__legend { font-size: inherit; margin-bottom: 0em; font-weight: 700; }

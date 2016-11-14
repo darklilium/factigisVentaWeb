@@ -1,0 +1,51 @@
+body { font-size: 16px; margin: 0; }
+
+.loader { position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 9999; background: url("images/Preloader_3.gif") 50% 50% no-repeat #f9f9f9; }
+
+.login_wrapper { height: 100vh; background-size: 100% 100%; background-attachment: fixed; display: flex; flex-direction: column; flex-wrap: wrap; justify-content: center; align-content: center; }
+
+.login_wrapper_content { background-color: rgba(255, 255, 255, 0.25); -webkit-box-shadow: 0px 0px 18px 2px rgba(117, 117, 117, 0.3); -moz-box-shadow: 0px 0px 18px 2px rgba(117, 117, 117, 0.3); box-shadow: 0px 0px 18px 2px rgba(117, 117, 117, 0.3); display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; background: rgba(15, 22, 32, 0.8); flex-grow: 1; }
+
+.login_article { width: 40%; height: 13em; display: flex; flex-flow: column wrap; align-items: flex-end; justify-content: center; }
+
+.login_aside { width: 50%; height: 13em; flex-grow: 2; align-items: flex-start; display: flex; justify-content: center; flex-direction: column; }
+
+.aside_div { display: flex; flex-direction: row; height: 50%; align-items: center; font-size: 1.6em; color: #BD0000; font-family: "ARIAL"; margin-left: 2.5em; }
+
+.aside_div2 { display: flex; flex-direction: column; justify-content: flex-start; width: auto; }
+
+.login_aside__p { font-size: 1em; color: #BD0000; font-family: inherit; font-style: normal; text-align: left; margin-left: 1em; margin-top: 0; }
+
+.login_footer { display: flex; position: fixed; bottom: 0px; flex-flow: column wrap; font-style: normal; color: #777777; align-content: center; justify-content: center; align-items: center; flex-grow: 3; width: 100%; }
+
+.login__input { border: 1px solid #c4c4c4; height: 25px; width: 15em; font-size: 13px; color: #BD0000; margin-top: 0.5em; padding: 4px 4px 4px 4px; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; box-shadow: 0px 0px 8px #d9d9d9; -moz-box-shadow: 0px 0px 8px #d9d9d9; -webkit-box-shadow: 0px 0px 8px #d9d9d9; }
+
+.login__input:focus { outline: none; border: 1px solid #BD0000; box-shadow: 0px 0px 8px #BD0000; -moz-box-shadow: 0px 0px 8px #BD0000; -webkit-box-shadow: 0px 0px 8px #BD0000; }
+
+.login__submit { border: 1px solid #eaeaea; border-radius: 0.5em; cursor: pointer; margin-top: 1em; padding: 0.5em; height: 45px; width: 15em; background-color: #BD0000; color: #fff; }
+
+.login_footer__img { width: 1.5em; height: 1.5em; margin: 0.5em; }
+
+.notification-login { display: inherit; flex-direction: row; flex-wrap: wrap; padding: 0; margin-left: -70px; background-color: black; color: white; padding: 0; margin: 0; }
+
+.login_footer__div { display: flex; align-items: center; padding: 0em; margin: 0; align-items: center; }
+
+.login_aside__img { margin-right: 0.5em; content: url("images/factigis_logo.png"); }
+
+@media (min-width: 320px) and (max-width: 480px) and (orientation: portrait) { .myLogin { display: flex; flex-direction: column; height: 100%; }
+  .login_wrapper_content { flex-direction: column-reverse; width: 100%; }
+  .login_article { width: 100%; justify-content: center; flex-direction: column; padding: 0; height: 10em; margin-bottom: 8em; align-items: center; }
+  .login_aside { width: 100%; height: 10em; align-items: center; flex-grow: 0; }
+  .aside_div { margin: 1em; height: 5em; } }
+
+@media (min-width: 481px) and (max-width: 650px) and (orientation: portrait) { .login_wrapper_content { display: flex; flex-direction: column-reverse; align-items: center; }
+  .login_article { width: 100%; align-items: center; }
+  .login_aside { width: 100%; height: 8em; }
+  .aside_div { display: flex; width: 100%; margin: 0; flex-direction: inherit; } }
+
+@media (min-width: 480px) and (max-width: 600px) and (orientation: landscape) { .login_wrapper_content { display: flex; flex-direction: column-reverse; align-items: center; height: 100vh; }
+  .login_article { width: 100%; align-items: center; }
+  .login_aside { width: 100%; height: 6em; }
+  .aside_div { display: flex; width: 100%; margin: 0; flex-direction: inherit; }
+  .login_footer__img { width: 1em; height: 1em; }
+  .footer__div__p { font-size: x-small; } }

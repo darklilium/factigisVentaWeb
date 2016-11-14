@@ -1,0 +1,20 @@
+.LayerList__wrapper{
+  z-index: 4;
+  margin-top: 3.5em;
+  position: absolute;
+  padding: 0.5em;
+  margin-left: 1em;
+  display: inline-block;
+  width: auto;
+  border-radius: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.LayerList__checkbox-div{
+  display: flex;
+}
+
+.LayerList__legend{
+  font-size: inherit;
+  margin-bottom: 0em;
+  font-weight: 700;
+}

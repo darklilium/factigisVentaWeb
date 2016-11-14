@@ -1,0 +1,225 @@
+.btnLogoff { color: #da291c; background-color: #ffffff !important; border-color: #808095; }
+
+.btnLogoff:hover { color: #fff; background-color: #2e353f !important; }
+
+.LayerList__legend { font-size: 11px; }
+
+.esriSimpleSliderTL { top: 2em; visibility: visible; float: right !important; position: relative; margin-right: 3em; }
+
+.arcgisSearch .searchGroup { margin-right: 5em; }
+
+.map .esriMapContainer { height: 100%; }
+
+.bodyfactigis { width: 100%; height: 100vh; }
+
+.myFactigis_FrontOffice { height: inherit; }
+
+.factigis_navElements { display: flex; flex-direction: row; }
+
+.factigis_top-right { display: flex; justify-content: center; align-content: center; position: absolute; right: 1em; }
+
+.factigis_whologged { display: flex; flex-direction: row; margin: 0.5em; }
+
+.wrapper_factigis { height: inherit; display: flex; flex-direction: column; }
+
+.factigis_map_div { position: relative; max-height: 945px; width: 100%; min-height: 800px; height: 100%; }
+
+.factigis_f { display: flex; flex-direction: column; height: 100%; }
+
+.wrapper_factibilidadLeft { width: 40%; background: ghostwhite; display: flex; flex-direction: column; }
+
+.wrapper_factibilidadRight { display: flex; flex-direction: column; position: relative; height: inherit; width: 60%; }
+
+.wrapper_factibilidadTop { display: flex; flex-direction: row; background-color: #e8e8e8; justify-content: space-between; }
+
+.breadcrumb { justify-content: flex-start; display: flex; align-items: center; -webkit-box-shadow: -1px 4px 35px -5px rgba(0, 0, 0, 0.52); -moz-box-shadow: -1px 4px 35px -5px rgba(0, 0, 0, 0.52); list-style: none; background-color: #f5f5f5; background: #fff; border-bottom: 1px solid #ddd; height: 40px; box-shadow: 0px 1px 5px rgba(190, 190, 190, 0.46); -webkit-box-shadow: 0px 1px 5px rgba(190, 190, 190, 0.46); -moz-box-shadow: 0px 1px 5px rgba(190, 190, 190, 0.46); -webkit-backface-visibility: hidden; width: 100%; margin: 0; }
+
+.factigis_search { display: flex !important; }
+
+.wrapper_factibilidadContent { display: flex; flex-direction: row; height: 100%; }
+
+.wrapper_factibilidadCenter { display: flex; z-index: 1; flex-direction: column; height: inherit; position: absolute; flex-wrap: wrap; justify-content: space-around; }
+
+.BasemapToggle { display: flex; width: auto; height: auto; z-index: 2; position: absolute; bottom: 1.3em; left: 1em; }
+
+@media screen and (min-width: 0px) and (max-width: 640px) and (orientation: portrait) { .bodyfactigis { width: 100%; height: inherit; }
+  .wrapper_factibilidadTop { display: flex; flex-direction: row; background-color: whitesmoke; justify-content: space-between; }
+  .wrapper_factibilidadContent { display: flex; flex-direction: row; height: 100%; }
+  .arcgisSearch .searchGroup { margin-right: 1em; }
+  .wrapper_factigis { height: inherit; display: flex; flex-direction: column; }
+  .wrapper_factibilidadLeft { width: 100%; background: ghostwhite; height: inherit; display: flex; flex-direction: column; position: relative; }
+  .wrapper_factibilidadRight { display: flex; flex-direction: column; position: relative; height: inherit; width: 100%; height: 320px; }
+  .factigis_map_div { position: relative; max-height: 945px; width: 100%; min-height: 945px; height: 100%; } }
+
+@media screen and (min-width: 800px) and (max-width: 1024px) and (orientation: portrait) { .bodyfactigis { width: 100%; height: inherit; }
+  .wrapper_factibilidadTop { display: flex; flex-direction: row; background-color: whitesmoke; justify-content: space-between; }
+  .wrapper_factibilidadContent { display: flex; flex-direction: row; height: 100%; }
+  .arcgisSearch .searchGroup { margin-right: 1em; }
+  .wrapper_factigis { height: inherit; display: flex; flex-direction: column; }
+  .wrapper_factibilidadLeft { width: 100%; background: ghostwhite; height: inherit; display: flex; flex-direction: column; position: relative; }
+  .wrapper_factibilidadRight { display: flex; flex-direction: column; position: relative; height: inherit; width: 100%; height: 320px; }
+  .factigis_map_div { position: relative; max-height: 945px; width: 100%; min-height: 945px; height: 100%; } }
+
+@media screen and (min-width: 800px) and (max-width: 1024px) and (orientation: landscape) { .bodyfactigis { width: 100%; height: inherit; }
+  .wrapper_factibilidadTop { display: flex; flex-direction: row; background-color: whitesmoke; justify-content: space-between; }
+  .wrapper_factibilidadContent { display: flex; flex-direction: row; height: 100%; }
+  .arcgisSearch .searchGroup { margin-right: 1em; }
+  .wrapper_factigis { height: inherit; display: flex; flex-direction: column; }
+  .wrapper_factibilidadLeft { width: 40%; background: ghostwhite; height: inherit; display: flex; flex-direction: column; position: relative; }
+  .wrapper_factibilidadRight { display: flex; flex-direction: column; position: relative; height: inherit; width: 60%; height: 320px; }
+  .factigis_map_div { position: relative; max-height: 945px; width: 100%; min-height: 945px; height: 100%; } }
+
+.factigisDir_searchTitle { display: flex; flex-direction: row; justify-content: space-between; }
+
+.factigisDir_imgLoader { height: 0.8em; width: 1em; display: none; margin-right: 1em; }
+
+.ReactModal__Overlay { z-index: 50; }
+
+a { color: #da291c; }
+
+.loader { position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 9999; background: url("images/Preloader_3.gif") 50% 50% no-repeat #f9f9f9; }
+
+.factigisAdd_searchTitle { display: flex; flex-direction: row; justify-content: space-between; }
+
+.factigisAdd_imgLoader { height: 0.8em; width: 1em; display: none; margin-right: 1em; }
+
+.factigis_groupEspecial { padding-top: 1.4em; display: flex; align-items: center; }
+
+.wrapper_factigisAdd { display: flex; flex-direction: column; padding: 1em; }
+
+.factigis_hr { border: 1px; border-style: inset; width: 100%; margin-bottom: 0; margin-top: -3px; }
+
+.factigis_groupbox { display: flex; flex-direction: row; justify-content: space-between; }
+
+.factigis-input { width: 85%; }
+
+.factigis_submitButton { width: 100%; margin-right: 1em; background-color: #da291c; color: white; }
+
+.factigisBtnAgregar:hover { color: #fff; background-color: #8c0000; border-color: #750000; }
+
+.factigis-selectFromMapButton { width: 3em; margin: 0 0 0 0.5em; }
+
+.factigis_hr-subtitle { border-style: ridge; width: 100%; color: rgba(0, 0, 0, 0.04); margin: 0px; }
+
+/* Checkbox CSS */
+/* Icons :To start, hide the original checkbox.*/
+/* Hide the Ordinary Checkbox */
+.factigis_ul { list-style: none; display: flex; justify-content: space-between; }
+
+.factigis_BigGroupbox { display: flex; flex-direction: column; padding: 0.6em 1em 0.8em 1em; font-size: 11px; }
+
+.factigis_BigGroupbox2 { display: flex; flex-direction: column; font-size: 10px; }
+
+.factigis_selectInput { width: 99%; }
+
+.factigis_selectEmpalme { max-width: 100%; }
+
+.factigis_groupbox-box { width: 50%; }
+
+input[type="checkbox"] { display: none; }
+
+/* Checkbox Icons */
+label { position: relative; padding-left: 30px; cursor: pointer; padding: 16px 28px 0 0; font-weight: normal; }
+
+label:before, label:after { font-family: FontAwesome; font-size: 0px; /*absolutely positioned*/ position: absolute; top: 0; left: -49px; right: 10px; }
+
+label:before { content: '\f096'; /*checkbox unchecked */ }
+
+label:after { content: '\f00c'; /*checkbox checked*/ max-width: 0; overflow: hidden; opacity: 0.5; font-size: 15px; top: 16px; left: -25px; color: #1EAB06; -webkit-transition: all 0.50s; -moz-transition: all 0.50s; -o-transition: all 0.50s; transition: all 0.50s; }
+
+/* Animating the Checkbox Icon */
+input[type="checkbox"]:checked + label:after { max-width: 25px; opacity: 1; margin-right: 90px; }
+
+.factigis__toggleBtnLabel { display: flex; flex-direction: inherit; align-items: center; padding-left: 1em; display: none; }
+
+.factigis_btnSelectCliente { color: black; border-color: black; }
+
+.factigis_btnSelectCalle { color: black; border-color: black; }
+
+.factigis_btnSelectPoste { color: black; border-color: black; }
+
+.factigis_btnSelectTramo { color: black; border-color: black; }
+
+.factigis_btnSelectDireccion { color: black; border-color: black; border-style: solid; }
+
+.factigis_input-solo { width: 99%; display: flex; height: 3.5em; }
+
+.factigis_group { width: 100%; }
+
+.factigisTramo2 { width: 90%; height: 3.2em; }
+
+.factigis_radiobutton { margin-right: 0.3em; margin-top: 0; }
+
+.factigis_radiobuttonGroup { display: flex; justify-content: space-around; align-items: center; }
+
+.factigis_buttons { display: flex; flex-direction: row-reverse; margin: 1em; }
+
+.factigis_addressGroup { width: 100%; }
+
+.obligatorio { margin-bottom: 1em; display: flex; flex-wrap: wrap; justify-content: flex-start; font-size: xx-small; }
+
+.btn-info { background-color: #808095; }
+
+.factigisBtnLimpiar:hover { background-color: #2e353f; }
+
+.factigisBtnAgregar:hover { color: #fff; background-color: #8c0000; border-color: #750000; }
+
+@media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: portrait) { .factigis_ul { flex-direction: column; } }
+
+@media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: landscape) { .factigis_ul { flex-direction: column; } }
+
+@media screen and (min-width: 1px) and (max-width: 640px) and (orientation: portrait) { .factigisTramo2 { width: 100%; height: 3.2em; } }
+
+@media screen and (min-width: 1px) and (max-width: 640px) and (orientation: landscape) { .factigisTramo2 { width: 100%; height: 3.2em; } }
+
+.LayerList__wrapper { z-index: 4; margin-top: 3.5em; position: absolute; padding: 0.5em; margin-left: 1em; display: inline-block; width: auto; border-radius: 0; background-color: rgba(255, 255, 255, 0.6); }
+
+.LayerList__checkbox-div { display: flex; }
+
+.LayerList__legend { font-size: inherit; margin-bottom: 0em; font-weight: 700; }
+
+.factigisBusqueda_h5 { font-size: 11px; background-color: ghostwhite; border: 1px dashed; width: 100%; display: flex; border-color: gainsboro; margin-top: 7px; }
+
+.factigisBusqueda_h8 { font-size: 13px; background-color: #e0e0e0; width: 100%; display: flex; }
+
+.factigisBF_searchTitle { display: flex; flex-direction: row; justify-content: space-between; }
+
+.factigisBF_imgLoader { height: 0.8em; width: 1em; display: none; }
+
+.factigis_submitButton:hover { color: #fff; background-color: #8c0000  !important; border-color: #750000  !important; }
+
+.btn-success:hover { color: #fff; background-color: #8c0000 !important; border-color: #750000  !important; }
+
+.btn-success { border-color: #750000  !important; }
+
+.factigis_submitButton:active { background-color: #8c0000  !important; }
+
+.factigis_groupboxBtn { display: flex; }
+
+.griddle-container { border: 1px solid #DDD; }
+
+.griddle .top-section { clear: both; display: table; width: 100%; }
+
+.griddle .griddle-filter { float: left; width: 50%; text-align: left; color: #222; min-height: 1px; }
+
+.griddle .griddle-settings-toggle { float: left; width: 50%; text-align: right; }
+
+.griddle .griddle-settings { background-color: #FFF; border: 1px solid #DDD; color: #222; padding: 10px; margin-bottom: 10px; }
+
+.griddle .griddle-settings .griddle-columns { clear: both; display: table; width: 100%; border-bottom: 1px solid #EDEDED; margin-bottom: 10px; }
+
+.griddle .griddle-settings .griddle-column-selection { float: left; width: 20%; }
+
+.griddle table { width: 100%; table-layout: fixed; }
+
+.griddle th { background-color: #EDEDEF; border: 0px; border-bottom: 1px solid #DDD; color: #222; padding: 5px; }
+
+.griddle td { padding: 5px; background-color: #FFF; border-top-color: #DDD; color: #222; }
+
+.griddle .footer-container { padding: 0px; background-color: #EDEDED; border: 0px; color: #222; }
+
+.griddle .griddle-previous, .griddle .griddle-page, .griddle .griddle-next { float: left; width: 33%; min-height: 1px; margin-top: 5px; }
+
+.griddle .griddle-page { text-align: center; }
+
+.griddle .griddle-next { text-align: right; }

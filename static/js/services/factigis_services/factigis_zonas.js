@@ -1,0 +1,83 @@
+//COMUNA - ZONA
+
+function FactigisZonas(){
+  return [
+    /*["SANTO DOMINGO",'SAN ANTONIO'],
+    ["SAN ANTONIO",'SAN ANTONIO'],
+    ["CARTAGENA",'SAN ANTONIO'],
+    ["EL TABO", 'SAN ANTONIO'],
+    ["VALPARAISO",'VALPARAISO'],
+    ["VIÑA DEL MAR",'COSTA'],
+    ["CONCON",'COSTA'],
+    ["QUINTERO", 'COSTA'],
+    ["PUCHUNCAVI", 'COSTA'],
+    ["VILLA ALEMANA", 'MARGA MARGA'],
+    ["QUILPUE",'MARGA MARGA'],
+    ["LIMACHE", "QUILLOTA"],
+    ["OLMUE","QUILLOTA"],
+    ["HIJUELAS", "QUILLOTA"],
+    ["LA CALERA", "QUILLOTA"],
+    ["LA CRUZ","QUILLOTA"],
+    ["QUILLOTA", "QUILLOTA"],
+    ["NOGALES", "QUILLOTA"],
+    ["CATEMU", "LOS ANDES"],
+    ["PANQUEHUE",  "LOS ANDES"],
+    ["LLAYLLAY",  "LOS ANDES"],
+    ["SAN FELIPE",  "LOS ANDES"],
+    ["RINCONADA",  "LOS ANDES"],
+    ["SANTA MARIA",  "LOS ANDES"],
+    ["SAN ESTEBAN",  "LOS ANDES"],
+    ["CALLE LARGA",  "LOS ANDES"],
+    ["LOS ANDES",  "LOS ANDES"]
+    */
+    ["SANTO DOMINGO",'SAN ANTONIO'],
+    ["SAN ANTONIO",'SAN ANTONIO'],
+    ["CARTAGENA",'SAN ANTONIO'],
+    ["EL TABO", 'SAN ANTONIO'],
+    ["ALGARROBO", "SAN ANTONIO"],
+    ["EL QUISCO", "SAN ANTONIO"],
+    ["VALPARAISO",'VALPARAISO - COSTA - MARGA MARGA'],
+    ["CASABLANCA", "VALPARAISO - COSTA - MARGA MARGA"],
+    ["VIÑA DEL MAR",'VALPARAISO - COSTA - MARGA MARGA'],
+    ["CONCON",'VALPARAISO - COSTA - MARGA MARGA'],
+    ["JUAN FERNANDEZ", 'VALPARAISO - COSTA - MARGA MARGA'],
+    ["QUINTERO", 'VALPARAISO - COSTA - MARGA MARGA'],
+    ["PUCHUNCAVI", 'VALPARAISO - COSTA - MARGA MARGA'],
+    ["VILLA ALEMANA", 'VALPARAISO - COSTA - MARGA MARGA'],
+    ["QUILPUE",'VALPARAISO - COSTA - MARGA MARGA'],
+    ["LIMACHE", 'VALPARAISO - COSTA - MARGA MARGA'],
+    ["OLMUE",'VALPARAISO - COSTA - MARGA MARGA'],
+    ["HIJUELAS", "QUILLOTA"],
+    ["LA CALERA", "QUILLOTA"],
+    ["LA CRUZ","QUILLOTA"],
+    ["QUILLOTA", "QUILLOTA"],
+    ["NOGALES", "QUILLOTA"],
+    ["CATEMU", "ACONCAGUA"],
+    ["PANQUEHUE",  "ACONCAGUA"],
+    ["LLAY LLAY",  "ACONCAGUA"],
+    ["SAN FELIPE",  "ACONCAGUA"],
+    ["RINCONADA",  "ACONCAGUA"],
+    ["SANTA MARIA",  "ACONCAGUA"],
+    ["SAN ESTEBAN",  "ACONCAGUA"],
+    ["CALLE LARGA",  "ACONCAGUA"],
+    ["LOS ANDES",  "ACONCAGUA"],
+    ["CABILDO", "ACONCAGUA"],
+    ["LA LIGUA", "ACONCAGUA"],
+    ["PAPUDO", "ACONCAGUA"],
+    ["PETORCA","ACONCAGUA"],
+    ["ZAPALLAR","ACONCAGUA"],
+    ["PUTAENDO", "ACONCAGUA"]
+  ];
+
+}
+
+
+function getZona(comuna){
+  let zona = FactigisZonas().filter(zona =>{
+    return zona[0] ==  comuna;
+  });
+  //console.log(zona[0][1]);
+  return zona[0][1];
+}
+
+export {FactigisZonas, getZona};

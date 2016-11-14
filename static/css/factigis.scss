@@ -1,0 +1,17 @@
+$colorBackground: #2e353f;
+$colorCHQRED: #da291c;
+$colorGray: #808095;
+
+.btnLogoff{
+  color: $colorCHQRED;
+  background-color: #ffffff !important;
+  border-color: $colorGray;
+}
+
+.btnLogoff:hover {
+  color: #fff;
+  background-color: $colorBackground !important;
+}
+
+@import "components/factigis/factigis_frontoffice.scss";
+@import "components/factigis/factigis_griddle.scss";

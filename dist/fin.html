@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<script>
+		
+			function getParameterByName(name) {
+				name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+				var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+				results = regex.exec(location.search);
+				return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+		
+			var rutCliente			= getParameterByName('rutCliente');
+			var nombre				= getParameterByName('nombre');
+			var apellido			= getParameterByName('apellido');
+			var telefono			= getParameterByName('telefono');
+			var email				= getParameterByName('email');
+			var tpResidencia		= getParameterByName('tpResidencia');
+            var direccion			= getParameterByName('direccion');
+            var comuna				= getParameterByName('comuna');
+            var tpEmpalme			= getParameterByName('tpEmpalme');
+            var estadoTramite		= getParameterByName('estadoTramite');
+            var tpFactibilidad		= getParameterByName('tpFactibilidad');
+            var empalme				= getParameterByName('empalme');
+            var fase				= getParameterByName('fase');
+            var potencia			= getParameterByName('potencia');
+            var potenciaCalc		= getParameterByName('potenciaCalc');
+            var origenFact			= getParameterByName('origenFact');
+            var nrEmpalme			= getParameterByName('nrEmpalme');
+            var tiempoEmp			= getParameterByName('tiempoEmp');
+			
+			//ejemplo:
+			alert (apellido);
+			
+		</script>
+	</head>
+</html>

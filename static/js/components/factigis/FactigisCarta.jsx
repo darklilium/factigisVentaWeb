@@ -24,10 +24,11 @@ class FactigisCarta extends React.Component {
   }
   componentWillMount(){
     //if theres no cookie, the user cannot be in factigis Carta.
-    if(!cookieHandler.get('usrprmssns')){
+  /*  if(!cookieHandler.get('usrprmssns')){
       window.location.href = "index.html";
       return;
     }
+  */  
     //else , charge the modules that the user has permissions
     this.setState({myElements: cookieHandler.get('myLetter') });
 

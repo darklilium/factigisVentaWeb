@@ -26,6 +26,7 @@ import cookieHandler from 'cookie-handler';
 import _ from 'lodash';
 import Rut from 'rutjs';
 import {getFormatedDate} from '../../services/login-service';
+import {getURLParameters} from '../../services/factigis_services/parameters';
 
 var Tab = ReactTabs.Tab;
 var Tabs = ReactTabs.Tabs;
@@ -61,6 +62,8 @@ class Factigis_Add extends React.Component {
     this.onClickCliente = this.onClickCliente.bind(this);
     this.onClickDireccion = this.onClickDireccion.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.onHideAllPasos = this.onHideAllPasos.bind(this);
+
 
     this.state = {
       factCartaComuna: '',
@@ -95,7 +98,7 @@ class Factigis_Add extends React.Component {
       factigis_geoDireccion: '',
 
       //save state for togglebuttons
-      toggleCliente: 'OFF',
+      toggleCliente: 'ESPERANDO PUNTO DE UBICACIÓN...',
       togglePoste: 'OFF',
       toggleDireccion: 'OFF',
       toggleTramo: 'OFF',
@@ -125,7 +128,7 @@ class Factigis_Add extends React.Component {
 
       //data for comboboxes
       factigis_tipoCliente: [],
-      factigis_tipoContribuyente: [] ,
+      factigis_tipoContribuyente: [],
       factigis_tipoEmpalme: [],
       factigis_tipoFase: [],
       factigis_tipoPotencia: [],
@@ -185,10 +188,13 @@ class Factigis_Add extends React.Component {
       factigis_lineaCP: '',
       factigis_lineaCD: '',
 
-      //disable toggles btn less select cliente
-      btnDireccionDisabled: true,
-      btnPosteDisabled: true,
-      btnTramoDisabled: true
+      //disable toggles btn
+      btnDireccionDisabled: false,
+      btnPosteDisabled: false,
+      btnClienteDisabled: false,
+
+      btnTramoDisabled: false,
+      cbTensionDisabled: false
 
 
     }
@@ -210,23 +216,29 @@ class Factigis_Add extends React.Component {
 
 
     });
+
+    var up = getURLParameters();
+    this.setState({
+      factigisRut: up.factigisRut,
+      factigisNombre: up.factigisNombre,
+      factigisApellido: up.factigisApellido,
+      factigisTelefono: up.factigisTelefono,
+      factigisEmail: up.factigisEmail,
+      factigis_selectedValueCliente: up.factigis_selectedValueCliente,
+      factigis_selectedValueTipoContribuyente: up.factigis_selectedValueTipoContribuyente,
+      factigisRutValidator: true,
+      factigisNombreValidator: true,
+      factigisApellidoValidator: true,
+      factigisTelefonoValidator: true,
+      factigisEmailValidator: true,
+      factigisTipoClienteValidator: true,
+      factigisTipoContribuyenteValidator: true
+    })
   }
 
   componentDidMount(){
-/*
-    var d = cookieHandler.get('wllExp');
-      if(d > getFormatedDate()){
-      //  console.log("dentro del rango");
-        if(!cookieHandler.get('tkn')){
-          console.log("no hay, redirect...");
-          window.location.href = "index.html";
-        }
-      }else{
-        console.log("Token expired");
-        window.location.href = "index.html";
-      }
 
-*/    //show widgets for each user permission available
+    //show widgets for each user permission available
     ////console.log(this.props.permissions);
     let showA = this.props.permissions.filter(p=>{
       return p=='CREAR_FACTIBILIDAD';
@@ -420,119 +432,103 @@ class Factigis_Add extends React.Component {
 
   }
 
-  //Functions for each button that get the map coordinates and validate the Factibility info.
+  //Functions for each button that get the map coordinates and validate the Factibility info. (paso 4);
   onClickCliente(e){
 
+    dojo.disconnect(this.state.btnPoste);
+    dojo.disconnect(this.state.btnCliente);
+    dojo.disconnect(this.state.btnDireccion);
+      $('.factigis_paso5').css('visibility',"hidden");
+
+    $('.factigis_btnSelectCliente').css('color',"crimson").css('border-color','red');
+
     var map = this.props.themap;
+    var map_click_handler = dojo.connect(map, 'onClick', (g)=>{
+      this.setState({btnCliente: map_click_handler});
+      $("#iframeloadingAdd").show();
 
-    //turn off the other toggle buttons from the same window.
-    toggleOff('direccion', this.state.btnDireccion);
-    toggleOff('poste', this.state.btnPoste, this.state.togglePoste);
-    toggleOff('tramo', this.state.btnTramo, this.state.toggleTramo);
+      //saves geometry point for customer.
+      this.setState({factigis_geoCliente: g.mapPoint, factigis_geoClienteValidator:true});
 
-    this.setState({togglePoste: 'OFF', toggleDireccion: 'OFF', toggleTramo: 'OFF',
-    btnPosteDisabled: true,btnTramoDisabled: true, btnDireccionDisabled: true});
+      $('.factigis_paso5').css('visibility',"visible");
 
-    if (this.state.toggleCliente =='OFF'){
-      this.setState({toggleCliente: 'ON'});
-      $('.factigis_btnSelectCliente').css('color',"crimson").css('border-color','red');
 
-      var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
-        $("#iframeloadingAdd").show();
-        //saves geometry point for customer.
-        this.setState({factigis_geoCliente: g.mapPoint, factigis_geoClienteValidator:true});
-
-        factigis_findComuna(g.mapPoint, (cb)=>{
-          console.log("comuna",cb[0].attributes.nombre);
-          let comunaa = cb[0].attributes.nombre;
-          //getting zone due to user click on map.
-          var zona = getZona(cb[0].attributes.nombre);
-          console.log("my zone",zona);
-
-          //validar factibilidad.
-          var zones = factigis_validator(g.mapPoint, (callbackMain)=>{
-            this.setState({
-              factCartaComuna: comunaa,
-              zonaConcesion: callbackMain.zonaConcesion,
-              zonaCampamentos: callbackMain.zonaCampamentos,
-              zonaRestringida: callbackMain.zonaRestringida,
-              zonaVialidad: callbackMain.zonaVialidad,
-              zonaTransmision: callbackMain.zonaTransmision,
-                //clear fields for pipes
-                factigis_geoPoste: '',
-                factigisRotulo: '',
-                factigisRotuloValidator: false,
-                factigis_geoPosteValidator: false,
-                //clear fields for addresses
-                factigis_geoDireccion: '',
-                factigisDireccion: '',
-                factigisIDDireccion: '',
-                factigisDireccionValidator: false,
-                factigis_geoDireccionValidator: false,
-                btnPosteDisabled: false,
-                btnDireccionDisabled: true,
-                factigis_sed: '',
-                factigis_selectedValueTipoEmpalmeBTMT: '',
-                factigisTipoBTMTValidator: false,
-                factigisTramo: '',
-                factigis_alimentador: '',
-                factigisComuna: cb[0].attributes.nombre,
-                factigisZona: zona
-            });
+      factigis_findComuna(g.mapPoint, (cb)=>{
+        let comunaa = cb[0].attributes.nombre;
+        //getting zone due to user click on map.
+        var zona = getZona(cb[0].attributes.nombre);
+        //validar factibilidad.
+        factigis_validator(g.mapPoint, (callbackMain)=>{
+          this.setState({
+            factCartaComuna: comunaa,
+            factigisComuna: cb[0].attributes.nombre,
+            factigisZona: zona,
+            zonaConcesion: callbackMain.zonaConcesion,
+            zonaCampamentos: callbackMain.zonaCampamentos,
+            zonaRestringida: callbackMain.zonaRestringida,
+            zonaVialidad: callbackMain.zonaVialidad,
+            zonaTransmision: callbackMain.zonaTransmision,
+            toggleCliente: 'MEDIDOR UBICADO'
           });
+          dojo.disconnect(this.state.btnCliente);
 
+          $('.factigis_btnSelectCliente').css('color',"black").css('border-color','black');
           //draw customer location on the map.
           map.graphics.clear();
           let pointSymbol = makeSymbol.makePointCustomer();
+          let pointSymbolPipe = makeSymbol.makePointPipe();
+          let pointSymbolAddress = makeSymbol.makePointAddress();
+
           map.graphics.add(new esri.Graphic(g.mapPoint,pointSymbol));
+          map.graphics.add(new esri.Graphic(this.state.factigis_geoDireccion,pointSymbolAddress));
+          map.graphics.add(new esri.Graphic(this.state.factigis_geoPoste,pointSymbolPipe));
+
+          var lineMedidorRotulo = new esri.geometry.Polyline(map.spatialReference);
+          var lineMedidorDireccion = new esri.geometry.Polyline(map.spatialReference);
+
+
+          lineMedidorRotulo.addPath([this.state.factigis_geoCliente, this.state.factigis_geoPoste]);
+          let lineSymbol = makeSymbol.makeTrackLine();
+
+          map.graphics.add(new esri.Graphic(lineMedidorRotulo,lineSymbol));
+          lineMedidorDireccion.addPath([this.state.factigis_geoCliente, this.state.factigis_geoDireccion]);
+          map.graphics.add(new esri.Graphic(lineMedidorDireccion,lineSymbol));
           $("#iframeloadingAdd").hide();
+
+
         });
-
       });
-      //change the state from toggle handler and save it for removing later
-      this.setState({btnCliente: map_click_handle});
-
-
-    }else{
-      this.setState({toggleCliente: 'OFF'});
-      $('.factigis_btnSelectCliente').css('color',"black").css('border-color','initial');
-      dojo.disconnect(this.state.btnCliente);
-      $("#iframeloadingAdd").hide();
-      ////////console.log("this is my saved point for cliente", this.state.factigis_geoCliente);
-    }
+    });
   }
 
   onClickPoste(e){
+    dojo.disconnect(this.state.btnPoste);
+    dojo.disconnect(this.state.btnCliente);
+    dojo.disconnect(this.state.btnDireccion);
+
+
+      $('.factigis_paso3').css('visibility',"hidden");
+        $('.factigis_paso4').css('visibility',"hidden");
+          $('.factigis_paso5').css('visibility',"hidden");
 
     var map = this.props.themap;
-    //turn off the other toggle buttons from the same window.
-    toggleOff('cliente', this.state.btnCliente, this.state.toggleCliente);
-    toggleOff('direccion', this.state.btnDireccion, this.state.toggleDireccion);
-    toggleOff('tramo', this.state.btnTramo, this.state.toggleTramo);
-    //limpiar campos relacionados a direccion y tipo de rotulo
-    this.setState({
-      factigis_geoDireccion: '',
-      factigisDireccion: '',
-      factigisIDDireccion: '',
-      factigisDireccionValidator: false,
-      factigis_geoDireccionValidator: false,
-      btnDireccionDisabled: true,
-      factigis_selectedValueTipoEmpalmeBTMT: '',
-      factigisTipoBTMTValidator: false,
-      factigisTramo: '',
-      factiTipoFactibilidad: 'FACTIBILIDAD DIRECTA',
-      btnTramoDisabled: true
-    });
+    //this.clearPaso345();
+      $('.factigis_btnSelectPoste').css('color',"crimson").css('border-color','red');
+      var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
+        this.setState({btnPoste: map_click_handle});
+        $("#iframeloadingAdd").show();
 
-    this.setState({toggleCliente: 'OFF',  toggleTramo: 'OFF', toggleDireccion: 'OFF'});
-    console.log(e,this.state.togglePoste)
-    if (this.state.togglePoste =='OFF'){
-      this.setState({togglePoste: 'ON'});
-        $('.factigis_btnSelectPoste').css('color',"crimson").css('border-color','red');
+        factigis_findRotulo(g.mapPoint, (featureSetFeatures)=>{
+          if(!featureSetFeatures.length){
+            console.log("not detected any pipe");
 
-        var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
-          $("#iframeloadingAdd").show();
-          factigis_findRotulo(g.mapPoint, (featureSetFeatures)=>{
+            $('.factigis_btnSelectPoste').css('color',"black").css('border-color','black');
+            $('.factigis_paso3').css('visibility',"hidden");
+            $("#iframeloadingAdd").hide();
+            this.setState({btnPosteDisabled: false});
+            dojo.disconnect(this.state.btnPoste);
+
+          }else{
             // verificar si es camara o poste
             if(featureSetFeatures[0].attributes['tipo_nodo']=="ele!camara"){
               //es camara
@@ -549,14 +545,12 @@ class Factigis_Add extends React.Component {
               ////console.log("poste es empresa" ,featureSetFeatures[0].attributes['propiedad'], featureSetFeatures);
               this.setState({factiTipoFactibilidad: 'FACTIBILIDAD DIRECTA'});
             }
-            //dibujar linea entre poste y cliente
-            var line = new esri.geometry.Polyline(map.spatialReference);
             map.graphics.clear();
-            map.graphics.add(new esri.Graphic(this.state.factigis_geoCliente,makeSymbol.makePointCustomer()));
-            line.addPath([this.state.factigis_geoCliente, featureSetFeatures[0].geometry]);
-            let lineSymbol = makeSymbol.makeTrackLine();
-            map.graphics.add(new esri.Graphic(line,lineSymbol));
-
+            let pointSymbol = makeSymbol.makePointAddress();
+            let pointSymbol2 = makeSymbol.makePointPipe();
+            //console.log(this.state.factigis_geoDireccion, "esto en geodir")
+            map.graphics.add(new esri.Graphic(this.state.factigis_geoDireccion,pointSymbol));
+            map.graphics.add(new esri.Graphic(g.mapPoint,pointSymbol2));
             //extrae datos de rotulo
             let rotulo = featureSetFeatures[0].attributes['rotulo'];
             var sed = featureSetFeatures[0].attributes['sed'];
@@ -569,21 +563,19 @@ class Factigis_Add extends React.Component {
               factigis_geoPosteValidator: true,
               factigis_sed: sed,
               factigis_alimentador: alimentador,
-              btnTramoDisabled: false,
-              btnDireccionDisabled: true,
-              factigisIDNodo: featureSetFeatures[0].attributes['id_nodo']
+              factigisIDNodo: featureSetFeatures[0].attributes['id_nodo'],
+              btnPosteDisabled: true
             });
+              dojo.disconnect(this.state.btnPoste);
             $("#iframeloadingAdd").hide();
-          });
+            $('.factigis_btnSelectPoste').css('color',"black").css('border-color','black');
+            $('.factigis_paso3').css('visibility',"visible");
 
-        });
-        this.setState({btnPoste: map_click_handle});
-    }else{
-      this.setState({togglePoste: 'OFF'});
-        $('.factigis_btnSelectPoste').css('color',"black");
-        dojo.disconnect(this.state.btnPoste);
-        ////////console.log("this is my saved point for poste", this.state.factigis_geoPoste);
-    }
+          }
+      });
+
+    });
+    this.setState({btnPoste: map_click_handle});
   }
 
   onClickTramo(e){
@@ -598,21 +590,23 @@ class Factigis_Add extends React.Component {
     map.addLayer(addmtayer,1);
 
     //turn off the other toggle buttons from the same window.
-    toggleOff('cliente', this.state.btnCliente, this.state.toggleCliente);
+    /*toggleOff('cliente', this.state.btnCliente, this.state.toggleCliente);
     toggleOff('poste', this.state.btnPoste, this.state.togglePoste);
     toggleOff('direccion', this.state.btnDireccion, this.state.toggleDireccion);
+    */
     //limpiar campos relacionados a direccion y tipo de rotulo
     this.setState({
-      factigis_geoDireccion: '',
+    /*  factigis_geoDireccion: '',
       factigisDireccion: '',
       factigisIDDireccion: '',
       factigisDireccionValidator: false,
       factigis_geoDireccionValidator: false,
-      btnDireccionDisabled: true,
+
       factigisTramo: ''
+      */
     });
 
-    this.setState({toggleCliente: 'OFF',  togglePoste: 'OFF', toggleDireccion: 'OFF'});
+    //  this.setState({toggleCliente: 'OFF',  togglePoste: 'OFF', toggleDireccion: 'OFF'});
 
     if (this.state.toggleTramo =='OFF'){
       this.setState({toggleTramo: 'ON'});
@@ -635,14 +629,14 @@ class Factigis_Add extends React.Component {
                 this.setState({
                   factigisTramoValidator: true,
                   factigisTramo: featureSetFeatures.descripcion,
-                  btnDireccionDisabled: false,
+
                   factiTipoFactibilidad: featureSetFeatures.tipoFactibilidad
                 });
               }else{
                 this.setState({
                   factigisTramoValidator: true,
                   factigisTramo: featureSetFeatures.descripcion,
-                  btnDireccionDisabled: false,
+
                   factiTipoFactibilidad: featureSetFeatures.tipoFactibilidad
                 });
               }
@@ -661,88 +655,91 @@ class Factigis_Add extends React.Component {
   }
 
   onClickDireccion(e){
+      this.onClickLimpiarDatos();
+    dojo.disconnect(this.state.btnPoste);
+    dojo.disconnect(this.state.btnCliente);
+    dojo.disconnect(this.state.btnDireccion);
+
+    $('.factigis_paso2').css('visibility',"hidden");
+      $('.factigis_paso3').css('visibility',"hidden");
+        $('.factigis_paso4').css('visibility',"hidden");
+          $('.factigis_paso5').css('visibility',"hidden");
+
     var map = this.props.themap;
 
-    //turn off the other toggle buttons from the same window.
-    toggleOff('cliente', this.state.btnCliente, this.state.toggleCliente);
-    toggleOff('poste', this.state.btnPoste, this.state.togglePoste);
-    toggleOff('tramo', this.state.btnTramo, this.state.toggleTramo);
-    this.setState({toggleCliente: 'OFF',togglePoste: 'OFF', toggleTramo:'OFF'});
+    $('.factigis_btnSelectPoste').css('color',"black").css('border-color','black');
+    $('.factigis_btnSelectCliente').css('color',"black").css('border-color','black');
 
-    if (this.state.toggleDireccion =='OFF'){
-      this.setState({toggleDireccion: 'ON'});
-        $('.factigis_btnSelectDireccion').css('color',"crimson");
+    //15/11
+    map.graphics.clear();
+    $('.factigis_btnSelectDireccion').css('color',"crimson").css('border-color','red');
+    var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
+      this.setState({btnDireccion: map_click_handle});
 
-        var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
-          $("#iframeloadingAdd").show();
-          factigis_findDireccion(g.mapPoint, (featureSetFeatures)=>{
-            //if theres no results for old addresses, search in new ones.
+      $("#iframeloadingAdd").show();
+      factigis_findDireccion(g.mapPoint, (featureSetFeatures)=>{
+        //if theres no results for old addresses, search in new ones.
+        if(!featureSetFeatures.length){
+
+          factigis_findNewDireccion(g.mapPoint, (featureSetFeatures)=>{
             if(!featureSetFeatures.length){
-              //////console.log("searching in new addresses");
-              factigis_findNewDireccion(g.mapPoint, (featureSetFeatures)=>{
-                if(!featureSetFeatures.length){
-                  //////console.log("not detected any in old or new adresses");
-                }else{
-                  //////console.log("detected in new addresses");
-                  let direccion = featureSetFeatures[0].attributes['CALLE'] + " " + featureSetFeatures[0].attributes['NUMERO'];
-                  this.setState({
-                    factigis_geoDireccion: featureSetFeatures[0].geometry,
-                    factigisDireccion: direccion,
-                    factigisIDDireccion: featureSetFeatures[0].attributes['OBJECTID'],
-                    factigisDireccionValidator: true,
-                    factigis_geoDireccionValidator: true
-                  });
-                  var line = new esri.geometry.Polyline(map.spatialReference);
-                  var line2 = new esri.geometry.Polyline(map.spatialReference);
-                  map.graphics.clear();
-                  map.graphics.add(new esri.Graphic(this.state.factigis_geoCliente,makeSymbol.makePointCustomer()));
-                  line.addPath([this.state.factigis_geoCliente, this.state.factigis_geoPoste]);
-                  let lineSymbol = makeSymbol.makeTrackLine();
-                  map.graphics.add(new esri.Graphic(line,lineSymbol));
-                  line2.addPath([this.state.factigis_geoCliente, this.state.factigis_geoDireccion]);
-                  map.graphics.add(new esri.Graphic(line2,lineSymbol));
-                  $("#iframeloadingAdd").hide();
-                }
-              });
-            //else , change the values for states and display the old address found.
-            }else{
-              //////console.log("detected in old addresses");
-              let direccion = featureSetFeatures[0].attributes['nombre_calle'] + " " + featureSetFeatures[0].attributes['numero'];
-              this.setState({
-                factigis_geoDireccion: featureSetFeatures[0].geometry,
-                factigisDireccion: direccion,
-                factigisIDDireccion: featureSetFeatures[0].attributes['id_direccion'],
-                factigisDireccionValidator: true,
-                factigis_geoDireccionValidator: true
-              });
-              var line = new esri.geometry.Polyline(map.spatialReference);
-              var line2 = new esri.geometry.Polyline(map.spatialReference);
-              map.graphics.clear();
-              map.graphics.add(new esri.Graphic(this.state.factigis_geoCliente,makeSymbol.makePointCustomer()));
-              line.addPath([this.state.factigis_geoCliente, this.state.factigis_geoPoste]);
-              let lineSymbol = makeSymbol.makeTrackLine();
-              map.graphics.add(new esri.Graphic(line,lineSymbol));
-              line2.addPath([this.state.factigis_geoCliente, this.state.factigis_geoDireccion]);
-              map.graphics.add(new esri.Graphic(line2,lineSymbol));
+              console.log("not detected any in old or new adresses");
+              $('.factigis_btnSelectDireccion').css('color',"black").css('border-color','black');
               $("#iframeloadingAdd").hide();
-            }
+
+              $('.factigis_paso2').css('visibility',"hidden");
+                $('.factigis_paso3').css('visibility',"hidden");
+                  $('.factigis_paso4').css('visibility',"hidden");
+                    $('.factigis_paso5').css('visibility',"hidden");
+                    this.setState({btnDireccionDisabled: false});
+                    dojo.disconnect(this.state.btnDireccion);
+
+            }else {
+                console.log("detected in new addresses");
+                let direccion = featureSetFeatures[0].attributes['CALLE'] + " " + featureSetFeatures[0].attributes['NUMERO'];
+                this.setState({
+                  factigis_geoDireccion: featureSetFeatures[0].geometry,
+                  factigisDireccion: direccion,
+                  factigisIDDireccion: featureSetFeatures[0].attributes['OBJECTID'],
+                  factigisDireccionValidator: true,
+                  factigis_geoDireccionValidator: true
+                });
+                let pointSymbol = makeSymbol.makePointAddress();
+                map.graphics.add(new esri.Graphic(g.mapPoint,pointSymbol));
+                $("#iframeloadingAdd").hide();
+                $('.factigis_btnSelectDireccion').css('color',"black").css('border-color','black');
+                $('.factigis_paso2').css('visibility',"visible");
+                this.setState({btnDireccionDisabled: true});
+                dojo.disconnect(this.state.btnDireccion);
+              }
           });
+        //else , change the values for states and display the old address found.
+        }else{
+          console.log("detected in old addresses");
+          let direccion = featureSetFeatures[0].attributes['nombre_calle'] + " " + featureSetFeatures[0].attributes['numero'];
+          this.setState({
+            factigis_geoDireccion: featureSetFeatures[0].geometry,
+            factigisDireccion: direccion,
+            factigisIDDireccion: featureSetFeatures[0].attributes['id_direccion'],
+            factigisDireccionValidator: true,
+            factigis_geoDireccionValidator: true
+          });
+          let pointSymbol = makeSymbol.makePointAddress();
+          map.graphics.add(new esri.Graphic(g.mapPoint,pointSymbol));
+          $("#iframeloadingAdd").hide();
+          $('.factigis_btnSelectDireccion').css('color',"black").css('border-color','black');
+          $('.factigis_paso2').css('visibility',"visible");
+          this.setState({btnDireccionDisabled: true});
+          dojo.disconnect(this.state.btnDireccion);
+        }
+      });
+    });
 
-
-        //save the handler for removing it later (in the off)
-        this.setState({btnDireccion: map_click_handle});
-
-        });
-
-    }else{
-      this.setState({toggleDireccion: 'OFF'});
-        $('.factigis_btnSelectDireccion').css('color',"black");
-        dojo.disconnect(this.state.btnDireccion);
-        ////////console.log("this is my saved point for poste", this.state.factigis_geoPoste);
-    }
   }
 
   onChangeComboBox(type, val){
+    var map = this.props.themap;
+
     switch (type) {
       case 'tipoCliente':
         //////console.log("haciendo click en tipo cliente", type,val);
@@ -765,7 +762,7 @@ class Factigis_Add extends React.Component {
       break;
 
       case 'tipoEmpalme':
-        //////console.log("haciendo click en ", type,val);
+        //  console.log("haciendo click en ", type,val);
         if(!val){
           //////console.log("no hay value" , val);
           this.setState({factigis_selectedValueTipoEmpalme: 'NODEFINIDO', factigisTipoEmpalmeValidator: false, factigis_tipoPotencia: []});
@@ -795,64 +792,130 @@ class Factigis_Add extends React.Component {
       break;
 
       case 'tipoEmpalmeBTMT':
+        console.log("empalme bt mt: ",val);
 
+        dojo.disconnect(this.state.btnPoste);
+        dojo.disconnect(this.state.btnCliente);
+        dojo.disconnect(this.state.btnDireccion);
+
+          $('.factigis_paso4').css('visibility',"hidden");
+              $('.factigis_paso5').css('visibility',"hidden");
+
+        $("#iframeloadingAdd").show();
+        //TURN ON THE RED BT Y MT layers
+        var addbtayer = setLayers().factigis_BT();
+        document.getElementById('check_BT').checked=true;
+        map.addLayer(addbtayer,1);
+        var addmtayer = setLayers().factigis_MT();
+        document.getElementById('check_MT').checked=true;
+        map.addLayer(addmtayer,1);
+
+        //Si no hay valor para lo seleccionado en BTMT
         if(!val){
-          ////console.log("no hay value" , val);
-          this.setState({
-            factigis_selectedValueTipoEmpalmeBTMT: '',
-            factigisTipoBTMTValidator: false,
-            factigisTramo: '',
-            factigisTramoValidator: false
-          });
+          console.log("no hay value en el nivel de tension" , val);
+          $("#iframeloadingAdd").hide();
+            $('.factigis_paso4').css('visibility',"hidden");
+              $('.factigis_paso5').css('visibility',"hidden");
+
+              this.setState({factigis_selectedValueTipoEmpalmeBTMT: '', cbTensionDisabled: false});
           return;
         }
-        this.setState({factigis_selectedValueTipoEmpalmeBTMT: val, factigisTipoBTMTValidator:true, factigisTramoValidator: true});
+        //Si hay:
+        //Guardar valor de empalme seleccionado, cambiar el validador de seleccion.
+        this.setState({factigis_selectedValueTipoEmpalmeBTMT: val, factigisTipoBTMTValidator:true});
+        var tramoTipo = 'Aéreo';
+        console.log(this.state.factigis_tipoEmpalme,"que empalme es para filtrar por tramos de aereos o sub");
+        if(this.state.factigis_tipoEmpalme.length==1){
+          tramoTipo = 'Subterráneo';
+        }
         if(val=='BT'){
+          //search around poste any tramo bt.
+          factigis_findTramo(this.state.factigis_geoPoste, val, tramoTipo, (featureSetFeatures)=>{
+            console.log(featureSetFeatures, "getting from findtramo");
+            if(featureSetFeatures.tipoFactibilidad=='FACTIBILIDAD ASISTIDA'){
+              this.setState({
+                factigisTramoValidator: true,
+                factigisTramo: featureSetFeatures.descripcion,
+
+                factiTipoFactibilidad: featureSetFeatures.tipoFactibilidad
+              });
+            }else{
+              this.setState({
+                factigisTramoValidator: true,
+                factigisTramo: featureSetFeatures.descripcion,
+
+                factiTipoFactibilidad: featureSetFeatures.tipoFactibilidad
+              });
+            }
+            $("#iframeloadingAdd").hide();
+          });
           ////console.log("seleccionado", val, "abriendo combo de potencia bt");
-          this.setState({visibilityStyle:
-            {
-              selectPotencia: {
-                visibility: 'visible'
+            this.setState({visibilityStyle:
+              {
+                selectPotencia: {
+                  visibility: 'visible'
+                },
+                txtPotencia:{
+                    visibility: 'hidden',
+                    display: 'none',
+                    height: 0
+                }
               },
-              txtPotencia:{
+              factigis_selectedValueTipoPotencia: '',
+              factigisPotenciaValidator: false,
+              factigistxtPotenciaValidator: true,
+              cbTensionDisabled: true
+
+            });
+            $('.factigisPotencia2').css('border-color','initial').css('border-style', 'groove');
+            //DISABLE QTTY WHEN VENTAWEB
+            this.setState({factigis_cantEmpalmesEnabled: true, factigisCantidadEmpalmes: '1', factigisCantidadEmpalmesValidator: true });
+
+            $('.factigis_paso4').css('visibility',"visible");
+
+        }else{
+          //when is mt, query around for mt
+            factigis_findTramo(this.state.factigis_geoPoste, val, tramoTipo, (featureSetFeatures)=>{
+            console.log(featureSetFeatures, "getting from findtramo");
+              if(featureSetFeatures.tipoFactibilidad=='FACTIBILIDAD ASISTIDA'){
+                this.setState({
+                  factigisTramoValidator: true,
+                  factigisTramo: featureSetFeatures.descripcion,
+
+                  factiTipoFactibilidad: featureSetFeatures.tipoFactibilidad
+                });
+              }else{
+                this.setState({
+                  factigisTramoValidator: true,
+                  factigisTramo: featureSetFeatures.descripcion,
+
+                  factiTipoFactibilidad: featureSetFeatures.tipoFactibilidad
+                });
+              }
+            $("#iframeloadingAdd").hide();
+            });
+            this.setState({visibilityStyle:
+              {
+                selectPotencia: {
                   visibility: 'hidden',
                   display: 'none',
                   height: 0
-              }
-            },
-            factigis_selectedValueTipoPotencia: '',
-            factigisPotenciaValidator: false,
-            factigistxtPotenciaValidator: true
-          });
-
-          $('.factigisPotencia2').css('border-color','initial').css('border-style', 'groove');
-
-          //ENABLE QTTY WHEN SELECT bt
-          this.setState({factigis_cantEmpalmesEnabled: false, factigisCantidadEmpalmes: 0});
-        }else{
-          ////console.log("seleccionado", val, "abriendo txt para escribir potencia");
-          this.setState({visibilityStyle:
-            {
-              selectPotencia: {
-                visibility: 'hidden',
-                display: 'none',
-                height: 0
+                },
+                txtPotencia:{
+                    visibility: 'visible',
+                    display: 'flex'
+                }
               },
-              txtPotencia:{
-                  visibility: 'visible',
-                  display: 'flex'
-              }
-            },
 
-            factigis_selectedValueTipoPotencia: '',
-            factigistxtPotenciaValidator: false,
-            factigisPotenciaValidator: true
-          });
-          $('.factigisPotencia').css('border-color','initial').css('border-style', 'hidden').css('border-width', '0px');
-
-          //DISABLE QTTY WHEN SELECT MT
-          this.setState({factigis_cantEmpalmesEnabled: true, factigisCantidadEmpalmes: '1', factigisCantidadEmpalmesValidator: true });
-
+              factigis_selectedValueTipoPotencia: '',
+              factigistxtPotenciaValidator: false,
+              factigisPotenciaValidator: true,
+              cbTensionDisabled: true
+            });
+            $('.factigisPotencia').css('border-color','initial').css('border-style', 'hidden').css('border-width', '0px');
+            //DISABLE QTTY WHEN SELECT MT
+            this.setState({factigis_cantEmpalmesEnabled: true, factigisCantidadEmpalmes: '1', factigisCantidadEmpalmesValidator: true });
+            $('.factigis_paso4').css('visibility',"visible");
         }
       break;
 
@@ -868,7 +931,7 @@ class Factigis_Add extends React.Component {
         break;
 
       case 'ddlClasificacion':
-      console.log("haciendo click en ",val);
+        console.log("haciendo click en ",val);
         if(!val){
         ////console.log("no hay value" , val);
           this.setState({factigisClasificacion:  'NODEFINIDO', factigisClasificacionValidator: false});
@@ -906,7 +969,7 @@ class Factigis_Add extends React.Component {
       <br />
       <button className="factigis_submitButton btn btn-info" onClick={this.closeModal.bind(this)}>Close</button>
     </Modal>
-*/
+    */
 
 
 
@@ -1027,9 +1090,24 @@ class Factigis_Add extends React.Component {
                 });
 
                 $("#iframeloadingAdd").hide();
+                this.onHideAllPasos();
+                this.setState({visibilityStyle:
+                  {
+                    selectPotencia: {
+                      visibility: 'hidden'
+                    },
+                    txtPotencia:{
+                        visibility: 'hidden',
+                        display: 'none',
+                        height: 0
+                    }
+                  }
+                });
+              //  parent.document.getElementById('fgIdFactibilidad').value = cb[0];
+                window.close();
                 //GENERAR CARTA: guardar en cookie los parametros con que fue generada la factibilidad para crear la carta.
-                let usrprfl = cookieHandler.get('usrprfl');
-                cookieHandler.set('myLetter',[this.state.factigisDireccion + ", " + this.state.factCartaComuna ,
+              //  let usrprfl = cookieHandler.get('usrprfl');
+              /*  cookieHandler.set('myLetter',[this.state.factigisDireccion + ", " + this.state.factCartaComuna ,
                       this.state.factigisNombre + " " + this.state.factigisApellido,
                       usrprfl.NOMBRE_COMPLETO,
                       cb[1],
@@ -1037,17 +1115,26 @@ class Factigis_Add extends React.Component {
                       usrprfl.LUGAR_DE_TRABAJO,
                       usrprfl.DEPARTAMENTO,
                       usrprfl.COMUNA]);
+
+                      'Venta Empalmes',
+                      cb[1],
+                      'Generado en Web',
+                      '',
+                      '',
+                      '']);
+
                     this.render(); //renderizar el componente
                     window.open("factigisCarta.html");
-              //si no fue grabado mostrar que hubo problemas en modal
-              }else{
-                this.setState({
-                  open: true,
-                  problemsforAdding: 'Hubo un problema al agregar la factibilidad',  numeroFactibilidad: '',
-                  btnModalCloseStatus: false
-                });
-                $("#iframeloadingAdd").hide();
-              }
+                */
+                //si no fue grabado mostrar que hubo problemas en modal
+                }else{
+                  this.setState({
+                    open: true,
+                    problemsforAdding: 'Hubo un problema al agregar la factibilidad',  numeroFactibilidad: '',
+                    btnModalCloseStatus: false
+                  });
+                  $("#iframeloadingAdd").hide();
+                }
 
             });
 
@@ -1120,8 +1207,23 @@ class Factigis_Add extends React.Component {
                     btnModalCloseStatus: false
                   });
                   $("#iframeloadingAdd").hide();
+                  this.onHideAllPasos();
+                  this.setState({visibilityStyle:
+                    {
+                      selectPotencia: {
+                        visibility: 'hidden'
+                      },
+                      txtPotencia:{
+                          visibility: 'hidden',
+                          display: 'none',
+                          height: 0
+                      }
+                    }
+                  });
+                //  parent.document.getElementById('fgIdFactibilidad').value = cb[0];
+                  window.close();
                   //GENERAR CARTA
-                  let usrprfl = cookieHandler.get('usrprfl');
+                /*  let usrprfl = cookieHandler.get('usrprfl');
                   cookieHandler.set('myLetter',[this.state.factigisDireccion,
                     this.state.factigisNombre + " " +this.state.factigisApellido,
                     usrprfl.NOMBRE_COMPLETO,
@@ -1134,7 +1236,7 @@ class Factigis_Add extends React.Component {
 
                     this.render(); //volver a renderizar el componente
                     window.open("factigisCarta.html");
-
+                */
                 //Si hubo un problema al agregar la factibilidad, se abre una ventana modal.
                 }else{
                   this.setState({
@@ -1173,8 +1275,24 @@ class Factigis_Add extends React.Component {
     this.setState({openModalValidator: false});
   }
 
-
   onClickLimpiarDatos(){
+    dojo.disconnect(this.state.btnPoste);
+    dojo.disconnect(this.state.btnCliente);
+    dojo.disconnect(this.state.btnDireccion);
+
+    this.setState({visibilityStyle:
+      {
+        selectPotencia: {
+          visibility: 'hidden'
+        },
+        txtPotencia:{
+            visibility: 'hidden',
+            display: 'none',
+            height: 0
+        }
+      }
+    });
+
     var map = this.props.themap;
     map.graphics.clear();
 
@@ -1191,7 +1309,7 @@ class Factigis_Add extends React.Component {
       factigis_geoCliente: '',
       factigis_geoPoste: '',
       factigis_geoDireccion: '',
-      toggleCliente: 'OFF',
+      toggleCliente: 'ESPERANDO PUNTO DE UBICACIÓN...',
       togglePoste: 'ON',
       toggleDireccion: 'ON',
       toggleTramo: 'ON',
@@ -1199,12 +1317,12 @@ class Factigis_Add extends React.Component {
       btnPoste: '',
       btnDireccion: '',
       btnTramo: '',
-      factigisRut: '',
+    /*  factigisRut: '',
       factigisNombre: '',
       factigisApellido: '',
       factigisTelefono: '',
       factigisEmail: '',
-      factigisRotulo: '',
+    */  factigisRotulo: '',
       factigisTramo: '',
       factigisDireccion: '',  //per full name
       factigisIDDireccion: '', //per id dir
@@ -1213,27 +1331,28 @@ class Factigis_Add extends React.Component {
       factigisComuna: '',
       factigis_tipoPotencia: [],
       factigis_cantidadEmpalmes: tipoCantidadEmpalmes,
-      factigis_selectedValueCliente: '',
-      factigis_selectedValueTipoContribuyente: '',
+    //  factigis_selectedValueCliente: '',
+    //  factigis_selectedValueTipoContribuyente: '',
       factigis_selectedValueTipoEmpalme: '',
       factigis_selectedValueTipoEmpalmePotencia: '',
       factigis_selectedValueTipoEmpalmeBTMT: '',
       factigis_selectedValueTipoFase: '',
       factigis_selectedValueTipoPotencia: '',
       factigisCantidadEmpalmes: '',
-      factigisRutValidator: false,
+      /*factigisRutValidator: false,
       factigisNombreValidator: false,
       factigisApellidoValidator: false,
       factigisTelefonoValidator: false,
       factigisEmailValidator: false,
+      */
       factigisRotuloValidator: false,
       factigisTramoValidator: false,
       factigisDireccionValidator: false,  //per full name
       factigisIDDireccionValidator: false, //per id dir
       factigisCantidadEmpalmesValidator: false,
       //validators for ddls
-      factigisTipoClienteValidator: false,
-      factigisTipoContribuyenteValidator: false,
+      //factigisTipoClienteValidator: false,
+      //factigisTipoContribuyenteValidator: false,
       factigisTipoEmpalmeValidator:false,
       factigisTipoFaseValidator: false,
       factigisTipoBTMTValidator: false,
@@ -1241,14 +1360,15 @@ class Factigis_Add extends React.Component {
       factigis_geoClienteValidator: false,
       factigis_geoPosteValidator: false,
       factigis_geoDireccionValidator: false,
-      btnPosteDisabled: true,
-      btnDireccionDisabled: true,
-      btnTramoDisabled: true,
+      btnPosteDisabled: false,
+      btnDireccionDisabled: false,
+      btnTramoDisabled: false,
       factigis_sed: '',
       factiTipoFactibilidad: 'FACTIBILIDAD DIRECTA',
       factigis_alimentador: '',
       factigisIDNodo: '',
-      factigisZona: ''
+      factigisZona: '',
+      cbTensionDisabled: false
     });
 
     $('.factigisRut').css('border-color','initial').css('border-style', 'groove');
@@ -1272,9 +1392,15 @@ class Factigis_Add extends React.Component {
     $('.factigis_btnSelectPoste').css('border-color','initial').css('border-style', 'solid');
     $('.factigis_btnSelectDireccion').css('border-color','initial').css('border-style', 'solid');
 
-    toggleOff('poste', this.state.btnPoste, this.state.togglePoste);
-    toggleOff('direccion', this.state.btnDireccion, this.state.toggleDireccion);
-    toggleOff('tramo', this.state.btnTramo, this.state.toggleTramo);
+    this.onHideAllPasos();
+
+  }
+
+  onHideAllPasos(){
+    $('.factigis_paso2').css('visibility',"hidden");
+    $('.factigis_paso3').css('visibility',"hidden");
+    $('.factigis_paso4').css('visibility',"hidden");
+    $('.factigis_paso5').css('visibility',"hidden");
   }
 
   render(){
@@ -1298,13 +1424,25 @@ class Factigis_Add extends React.Component {
         </TabList>
         {/* Tab cliente */}
         {this.state.showA && <TabPanel>
+            {/* PASO 1*/}
           <div className="factigisAdd_searchTitle">
-            <h7><b>Ingrese datos del contacto y ubicación del medidor:</b></h7>
+            <h7><b>Paso 1: Busque su dirección en el mapa y selecciónela con el botón.</b></h7>
             <img className="factigisAdd_imgLoader" src="dist/css/images/ajax-loader.gif" alt="loading" id="iframeloadingAdd"/>
           </div>
           <hr className="factigis_hr-subtitle factigis_hr"/>
           <div className="factigis_BigGroupbox">
-            <h8>Rut:</h8>
+
+            <h8>Dirección:</h8>
+            <div className="factigis_groupbox">
+              <input id="factigis_txtDireccion" className="factigis-input factigisDireccion" title="Dirección" disabled={true} type="text" placeholder="Dirección encontrada" value={this.state.factigisDireccion} />
+              <button onClick={this.onClickDireccion} disabled={this.state.btnDireccionDisabled} className="factigis-selectFromMapButton factigis_btnSelectDireccion btn btn-default factigisDireccion" title="Selecciona Dirección " type="button" >
+                <span><i className="fa fa-home"></i></span>
+              </button>
+              <h8 className="factigis__toggleBtnLabel">{this.state.toggleDireccion}</h8>
+
+            </div>
+            <h7><b>Nota: Si no la encuentra, ingrese su dirección en la segunda pestaña.</b></h7>
+           {/*  <h8>Rut:</h8>
             <div className="factigis_groupbox">
               <input id="factigis_txtRut" className="factigis-input factigisRut" onChange={this.onChange.bind(this)} onBlur={this.onBlur} value={this.state.factigisRut} title="Ingrese Rut e indique ubicación del cliente" type="text" placeholder="Ingrese Rut e indique ubicación del cliente"  />
               <button onClick={this.onClickCliente} className="factigis-selectFromMapButton factigis_btnSelectCliente btn btn-default" title="Ir " type="button" >
@@ -1312,8 +1450,8 @@ class Factigis_Add extends React.Component {
               </button>
               <h8 className="factigis__toggleBtnLabel">{this.state.toggleCliente}</h8>
             </div>
-
-            <div className="factigis_groupbox">
+            */}
+            {/*<div className="factigis_groupbox">
               <div className="factigis_group">
                 <h8>Nombre Cliente:</h8>
                 <input id="factigis_txtNombre" onChange={this.onChange.bind(this)} value={this.state.factigisNombre} onBlur={this.onBlur} className="factigis-input factigis_input-solo factigisNombre" title="Escriba el nombre del cliente" type="text" placeholder="Nombre Completo"  />
@@ -1324,7 +1462,8 @@ class Factigis_Add extends React.Component {
                 <input id="factigis_txtApellido" onChange={this.onChange.bind(this)} value={this.state.factigisApellido} onBlur={this.onBlur} className="factigis-input factigis_input-solo factigisApellido" title="Escriba el primer apellido del cliente" type="text" placeholder="Apellido Paterno"  />
               </div>
             </div>
-
+          */}
+          {/*
             <div className="factigis_groupbox">
               <div className="factigis_group">
                 <h8>Telefono:</h8>
@@ -1334,7 +1473,6 @@ class Factigis_Add extends React.Component {
               <div className="factigis_group">
                 <h8>Email:</h8>
                 <input id="factigis_txtEmail" className="factigis-input factigis_input-solo factigisEmail" onChange={this.onChange.bind(this)}  value={this.state.factigisEmail} onBlur={this.onBlur} title="Escriba el email de contacto" type="text" placeholder="ejemplo@email.com (No ingresar correo Chilquinta)"  />
-
               </div>
             </div>
             <div className="factigis_groupbox">
@@ -1349,136 +1487,171 @@ class Factigis_Add extends React.Component {
                   value={this.state.factigis_selectedValueTipoContribuyente} simpleValue clearable={true} searchable={false} placeholder="Seleccione el tipo de contribuyente"/>
               </div>
             </div>
+            */}
           </div>
-          <h7><b>Seleccione datos de red para el estudio:</b></h7>
 
-          <hr className="factigis_hr-subtitle factigis_hr"/>
-          <div className="factigis_BigGroupbox">
-            <h8>Rótulo Conexión:</h8>
-            <div className="factigis_groupbox">
-              <input id="factigis_txtRotulo" className="factigis-input factigisRotulo"  value={this.state.factigisRotulo} ref="rotuloValue" title="Poste o Cámara" disabled={true} type="text" placeholder="Poste o cámara encontrado" />
-              <button onClick={this.onClickPoste.bind(this)} disabled={this.state.btnPosteDisabled} className="factigis-selectFromMapButton factigis_btnSelectPoste btn btn-default" title="Ir " type="button" >
-                <span><i className="fa fa-map-signs"></i></span>
-              </button>
-              <h8 className="factigis__toggleBtnLabel">{this.state.togglePoste}</h8>
+          {/* PASO 2*/}
+          <div className="factigis_paso2">
+            <div className="factigisAdd_searchTitle">
+              <h7><b>Paso 2: Seleccione desde el mapa el poste más cercano a su casa:</b></h7>
             </div>
-            <div className="factigis_groupbox">
-            <div className="factigis_group">
-            <h8>Nivel de Tensión:</h8>
-
-              <div className="factigis_group " >
-                <Select id="dllTipoBTMT" className="factigis_selectEmpalme factigis_selectInput factigisTipo " name="dllTipoBTMT" options={this.state.factigis_tipoEmpalmeBTMT} onChange={this.onChangeComboBox.bind(this,"tipoEmpalmeBTMT")}
-                value={this.state.factigis_selectedValueTipoEmpalmeBTMT} simpleValue clearable={true} searchable={false} placeholder="Seleccione BT/MT"/>
+            <hr className="factigis_hr-subtitle factigis_hr"/>
+            <div className="factigis_BigGroupbox">
+              <h8>Rótulo Conexión:</h8>
+              <div className="factigis_groupbox">
+                <input id="factigis_txtRotulo" className="factigis-input factigisRotulo"  value={this.state.factigisRotulo} ref="rotuloValue" title="Poste o Cámara" disabled={true} type="text" placeholder="Poste o cámara encontrado" />
+                <button onClick={this.onClickPoste.bind(this)} disabled={this.state.btnPosteDisabled} className="factigis-selectFromMapButton factigis_btnSelectPoste btn btn-default" title="Ir " type="button" >
+                  <span><i className="fa fa-map-signs"></i></span>
+                </button>
+                <h8 className="factigis__toggleBtnLabel">{this.state.togglePoste}</h8>
               </div>
             </div>
-            <div className="factigis_group">
-                <h8>Tramo de Conexión:</h8>
-              <div className="factigis_group ">
-                <input id="factigis_txtTramo" value={this.state.factigisTramo} disabled={true} onChange={this.onChange.bind(this)} onBlur={this.onBlur} className="factigis-input factigis_input-solo factigisTramo factigisTramo2" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
-                <h8 className="factigis__toggleBtnLabel">{this.state.toggleDireccion}</h8>
-              </div>
-            </div>
-              <div className="factigis_groupEspecial">
-              <button onClick={this.onClickTramo.bind(this)} disabled={this.state.btnTramoDisabled} className="factigis-selectFromMapButton factigis_btnSelectTramo btn btn-default" title="Selecciona Tramo " type="button" >
-                <span><i className="fa fa-code-fork"></i></span>
-                <h8 className="factigis__toggleBtnLabel">{this.state.toggleTramo}</h8>
-              </button>
-              </div>
-            </div>
-            <h8>Dirección:</h8>
-            <div className="factigis_groupbox">
-              <input id="factigis_txtDireccion" className="factigis-input factigisDireccion" title="Dirección" disabled={true} type="text" placeholder="Dirección encontrada" value={this.state.factigisDireccion} />
-              <button onClick={this.onClickDireccion} disabled={this.state.btnDireccionDisabled} className="factigis-selectFromMapButton factigis_btnSelectDireccion btn btn-default factigisDireccion" title="Selecciona Dirección " type="button" >
-                <span><i className="fa fa-home"></i></span>
-              </button>
-              <h8 className="factigis__toggleBtnLabel">{this.state.toggleDireccion}</h8>
-            </div>
-            <div className="factigis_groupbox">
-              <div className="factigis_group">
-                <h8>Empalme:</h8>
-                <Select id="ddlTipoEmpalme" className="factigis_selectEmpalme factigis_selectInput factigisTipoEmpalme" name="ddlTipoEmpalme" options={this.state.factigis_tipoEmpalme} onChange={this.onChangeComboBox.bind(this,"tipoEmpalme")}
-                  value={this.state.factigis_selectedValueTipoEmpalme} simpleValue clearable={true} searchable={false} placeholder="Seleccione tipo empalme"/>
-              </div>
-              <div className="factigis_group">
-                <h8>Fase:</h8>
-                <Select id="ddlFase" className="factigis_selectEmpalme factigis_selectInput factigis_tipoFase " name="ddlFase" options={this.state.factigis_tipoFase} onChange={this.onChangeComboBox.bind(this,"tipoFase")}
-                  value={this.state.factigis_selectedValueTipoFase} simpleValue clearable={true} searchable={false} placeholder="Seleccione tipo fase"/>
-              </div>
-              <div className="factigis_group">
-                <h8>Potencia (kW):</h8>
-                <Select style={this.state.visibilityStyle.selectPotencia} onOpen={this.onOpen.bind(this)} id="ddlPotencia" disabled={false} className="factigis_selectEmpalme factigis_selectInput factigisPotencia " name="ddlPotencia" options={this.state.factigis_tipoPotencia} onChange={this.onChangeComboBox.bind(this,"tipoPotencia")}
-                  value={this.state.factigis_selectedValueTipoPotencia} simpleValue clearable={true} searchable={false} placeholder="Seleccione potencia"/>
-                <input style={this.state.visibilityStyle.txtPotencia} id="factigis_txtPotencia" value={this.state.factigis_selectedValueTipoPotencia} disabled={false} onChange={this.onChange.bind(this)} onBlur={this.onBlur} className="factigis-input factigis_input-solo factigisPotencia2" title="Ingrese potencia" type="text" placeholder="Potencia solicitada" />
-
-              </div>
-            </div>
-            <div className="factigis_groupbox">
-              <div className="factigis_group factigis_radiobuttonGroup">
-                <input type="radio" id="factigis_checkEmpalmeDefinitivo" className="factigis_radiobutton" name="permanenciaEmpalme" value="DEFINITIVO" defaultChecked={this.state.radioEmpalmeDefinitivo} onChange={this.onChange.bind(this)} />Definitivo<br />
-                <input type="radio" id="factigis_checkEmpalmeProvisorio" className="factigis_radiobutton" name="permanenciaEmpalme" value="PROVISORIO" defaultChecked={this.state.radioEmpalmeProvisorio} onChange={this.onChange.bind(this)}/>Provisorio<br />
-              </div>
-
-              <div className="factigis_group">
-                <h8>Cantidad Empalmes:</h8>
-                <Select id="ddlCantidadEmpalmes" className="factigis_selectEmpalme factigis_selectInput factigisCantidadEmpalmes"
-                  disabled={this.state.factigis_cantEmpalmesEnabled}  name="ddlPotencia" options={this.state.factigis_cantidadEmpalmes} onChange={this.onChangeComboBox.bind(this,"ddlCantidadEmpalmes")}
-                  value={this.state.factigisCantidadEmpalmes} simpleValue clearable={true} searchable={false} placeholder="Seleccione cantidad"/>
-
-              </div>
-            </div>
-            <div className="factigis_groupbox">
-              <div className="factigis_group">
-                <h8>Clasificación:</h8>
-                <Select id="ddlClasificacion" className="factigis_selectEmpalme factigis_selectInput factigisCantidadEmpalmes"
-                  name="ddlClasificacion" options={this.state.factigis_todasLasClasificaciones} onChange={this.onChangeComboBox.bind(this,"ddlClasificacion")}
-                  value={this.state.factigisClasificacion} simpleValue clearable={true} searchable={false} placeholder="Seleccione clasificacion"/>
-              </div>
-            </div>
-
           </div>
-            <hr className="factigis_hr"/>
-            <h9><b>Verifique restricciones para la emisión de certificado:</b></h9>
-            <div className="factigis_listbox">
-              <ul className="factigis_ul">
-                <div>
-                  <li>
-                    <input type="checkbox" name="manager" id="manager" disabled="true" checked={this.state.zonaConcesion} />
-                    <label htmlFor="manager" id="lblConcesion">Zona Concesión</label>
-                  </li>
-                  <li>
-                    <input type="checkbox" name="csr" id="csr" disabled="true" checked={this.state.zonaTransmision} />
-                    <label htmlFor="csr2" id="lblTransmision">Zona Transmisión</label>
-                  </li>
-                  <li>
-                    <input type="checkbox" name="webdesigner" id="webdesigner" disabled="true" checked={this.state.zonaRestringida} />
-                    <label htmlFor="webdesigner" id="lblRestringida">Zona Restringida</label>
-                  </li>
 
+
+          {/* PASO 3*/}
+          <div className="factigis_paso3">
+            <div className="factigisAdd_searchTitle">
+              <h7><b>Paso 3: Seleccione el nivel de tensión:</b></h7>
+            </div>
+            <hr className="factigis_hr-subtitle factigis_hr"/>
+            <div className="factigis_BigGroupbox">
+              <div className="factigis_groupbox">
+                <div className="factigis_group">
+                    <h8>Nivel de Tensión:</h8>
+                    <div className="factigis_group " >
+                      <Select disabled={this.state.cbTensionDisabled} id="dllTipoBTMT" className="factigis_selectEmpalme factigis_selectInput factigisTipo " name="dllTipoBTMT" options={this.state.factigis_tipoEmpalmeBTMT} onChange={this.onChangeComboBox.bind(this,"tipoEmpalmeBTMT")}
+                      value={this.state.factigis_selectedValueTipoEmpalmeBTMT} simpleValue clearable={true} searchable={false} placeholder="Seleccione BT/MT"/>
+                    </div>
+                  </div>
+                <div className="factigis_group notShow">
+                    <h8>Tramo de Conexión:</h8>
+                <div className="factigis_group ">
+                    <input id="factigis_txtTramo" value={this.state.factigisTramo} disabled={true} onChange={this.onChange.bind(this)} onBlur={this.onBlur} className="factigis-input factigis_input-solo factigisTramo factigisTramo2" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
+                    <h8 className="factigis__toggleBtnLabel">{this.state.toggleDireccion}</h8>
                 </div>
-                <div>
-                  <li>
-                    <input type="checkbox" name="webdev" id="webdev"  disabled="true" checked={this.state.zonaVialidad}/>
-                    <label htmlFor="webdev" id="lblVialidad">Zona Vialidad</label>
-                  </li>
-                  <li>
-                    <input type="checkbox" name="csr" id="csr" disabled="true" checked={this.state.zonaCampamentos} />
-                    <label htmlFor="csr" id="lblCampamentos">Zona Campamentos</label>
-                  </li>
+              </div>
+                <div className="factigis_groupEspecial">
+                {/* <button onClick={this.onClickTramo.bind(this)} disabled={this.state.btnTramoDisabled} className="factigis-selectFromMapButton factigis_btnSelectTramo btn btn-default" title="Selecciona Tramo " type="button" >
+                  <span><i className="fa fa-code-fork"></i></span>
+                  <h8 className="factigis__toggleBtnLabel">{this.state.toggleTramo}</h8>
+                  </button>
+                */}
                 </div>
-              </ul>
+              </div>
+            </div>
+          </div>
+
+
+          {/* PASO 4*/}
+          <div className="factigis_paso4">
+            <div className="factigisAdd_searchTitle">
+              <h7><b>Paso 4: Indique la ubicación del medidor en el mapa y datos de red:</b></h7>
+            </div>
+            <hr className="factigis_hr-subtitle factigis_hr"/>
+              <div className="factigis_BigGroupbox ">
+                <div className="factigis_group factigis_zonasGroup paso4Special ">
+                  <div className="factigis_listbox notShow">
+                    <ul className="factigis_ul">
+                      <div className="factigis_liGroup">
+                        <li>
+                          <input type="checkbox" name="manager" id="manager" disabled="true" checked={this.state.zonaConcesion} />
+                          <label htmlFor="manager" id="lblConcesion">Zona Concesión</label>
+                        </li>
+                        <li>
+                          <input type="checkbox" name="csr" id="csr" disabled="true" checked={this.state.zonaTransmision} />
+                          <label htmlFor="csr2" id="lblTransmision">Zona Transmisión</label>
+                        </li>
+                        <li>
+                          <input type="checkbox" name="webdesigner" id="webdesigner" disabled="true" checked={this.state.zonaRestringida} />
+                          <label htmlFor="webdesigner" id="lblRestringida">Zona Restringida</label>
+                        </li>
+
+                      </div>
+                      <div className="factigis_liGroup">
+                        <li>
+                          <input type="checkbox" name="webdev" id="webdev"  disabled="true" checked={this.state.zonaVialidad}/>
+                          <label htmlFor="webdev" id="lblVialidad">Zona Vialidad</label>
+                        </li>
+                        <li>
+                          <input type="checkbox" name="csr" id="csr" disabled="true" checked={this.state.zonaCampamentos} />
+                          <label htmlFor="csr" id="lblCampamentos">Zona Campamentos</label>
+                        </li>
+                      </div>
+                    </ul>
+                  </div>
+                  <button id="btnClientee" onClick={this.onClickCliente} className="factigis-selectFromMapButton factigis_btnSelectCliente btn btn-default" title="Ir " type="button" >
+                    <span><i className="fa fa-map-marker"></i></span>
+                  </button>
+                  <h8 className="SeleccionUbicacion">{this.state.toggleCliente}</h8>
+                </div>
+              </div>
+
+
+          {/* PASO 5*/}
+
+            <div className="factigisAdd_searchTitle notShow">
+              <h7><b>Paso 5: Indique los datos de red del empalme:</b></h7>
+            </div>
+            <hr className="factigis_hr-subtitle factigis_hr"/>
+            <div className="factigis_BigGroupbox">
+              <div className="factigis_groupbox">
+                <div className="factigis_group">
+                  <h8>Empalme:</h8>
+                  <Select id="ddlTipoEmpalme" className="factigis_selectEmpalme factigis_selectInput factigisTipoEmpalme" name="ddlTipoEmpalme" options={this.state.factigis_tipoEmpalme} onChange={this.onChangeComboBox.bind(this,"tipoEmpalme")}
+                    value={this.state.factigis_selectedValueTipoEmpalme} simpleValue clearable={true} searchable={false} placeholder="Seleccione tipo empalme"/>
+                </div>
+                <div className="factigis_group">
+                  <h8>Fase:</h8>
+                  <Select id="ddlFase" className="factigis_selectEmpalme factigis_selectInput factigis_tipoFase " name="ddlFase" options={this.state.factigis_tipoFase} onChange={this.onChangeComboBox.bind(this,"tipoFase")}
+                    value={this.state.factigis_selectedValueTipoFase} simpleValue clearable={true} searchable={false} placeholder="Seleccione tipo fase"/>
+                </div>
+                <div className="factigis_group">
+                  <h8>Potencia (kW):</h8>
+                  <Select style={this.state.visibilityStyle.selectPotencia} onOpen={this.onOpen.bind(this)} id="ddlPotencia" disabled={false} className="factigis_selectEmpalme factigis_selectInput factigisPotencia " name="ddlPotencia" options={this.state.factigis_tipoPotencia} onChange={this.onChangeComboBox.bind(this,"tipoPotencia")}
+                    value={this.state.factigis_selectedValueTipoPotencia} simpleValue clearable={true} searchable={false} placeholder="Seleccione potencia"/>
+                  <input style={this.state.visibilityStyle.txtPotencia} id="factigis_txtPotencia" value={this.state.factigis_selectedValueTipoPotencia} disabled={false} onChange={this.onChange.bind(this)} onBlur={this.onBlur} className="factigis-input factigis_input-solo factigisPotencia2" title="Ingrese potencia" type="text" placeholder="Potencia solicitada" />
+                </div>
+              </div>
+              <div className="factigis_groupbox">
+                <div className="factigis_group factigis_radiobuttonGroup">
+                  <input type="radio" id="factigis_checkEmpalmeDefinitivo" className="factigis_radiobutton" name="permanenciaEmpalme" value="DEFINITIVO" defaultChecked={this.state.radioEmpalmeDefinitivo} onChange={this.onChange.bind(this)} />Definitivo<br />
+                  <input type="radio" id="factigis_checkEmpalmeProvisorio" className="factigis_radiobutton" name="permanenciaEmpalme" value="PROVISORIO" defaultChecked={this.state.radioEmpalmeProvisorio} onChange={this.onChange.bind(this)}/>Provisorio<br />
+                </div>
+                <div className="factigis_group">
+                  <h8>Cantidad Empalmes:</h8>
+                  <Select id="ddlCantidadEmpalmes" className="factigis_selectEmpalme factigis_selectInput factigisCantidadEmpalmes"
+                    disabled={this.state.factigis_cantEmpalmesEnabled}  name="ddlPotencia" options={this.state.factigis_cantidadEmpalmes} onChange={this.onChangeComboBox.bind(this,"ddlCantidadEmpalmes")}
+                    value={this.state.factigisCantidadEmpalmes} simpleValue clearable={true} searchable={false} placeholder="Seleccione cantidad"/>
+                </div>
+              </div>
+              <div className="factigis_groupbox">
+                <div className="factigis_group">
+                  <h8>Clasificación:</h8>
+                  <Select id="ddlClasificacion" disabled={true} className="factigis_selectEmpalme factigis_selectInput factigisCantidadEmpalmes"
+                    name="ddlClasificacion" options={this.state.factigis_todasLasClasificaciones} onChange={this.onChangeComboBox.bind(this,"ddlClasificacion")}
+                    value={this.state.factigisClasificacion} simpleValue clearable={true} searchable={false} placeholder="Seleccione clasificacion"/>
+                </div>
+              </div>
             </div>
             <hr className="factigis_hr"/>
-            <div className="factigis_buttons">
-              <button onClick={this.onClickAgregarCliente.bind(this)}
-                className="factigis_submitButton btn btn-success factigisBtnAgregar" title="Agregar Factibilidad " type="button" >
-                <span><i className="fa fa-plus"></i> Agregar</span>
-              </button>
+              <div className="factigis_buttons">
+                <button onClick={this.onClickAgregarCliente.bind(this)}
+                  className="factigis_submitButton btn btn-success factigisBtnAgregar" title="Agregar Factibilidad " type="button" >
+                  <span><i className="fa fa-plus"></i> Agregar</span>
+                </button>
+                {/*<button onClick={this.onClickLimpiarDatos.bind(this)}
+                  className="factigis_submitButton btn btn-info factigisBtnLimpiar" title="Limpiar campos " type="button" >
+                  <span><i className="fa fa-eraser" aria-hidden="true"></i> Limpiar</span>
+                </button>
+                */}
+              </div>
+          </div>
 
-              <button onClick={this.onClickLimpiarDatos.bind(this)}
-                className="factigis_submitButton btn btn-info factigisBtnLimpiar" title="Limpiar campos " type="button" >
-                <span><i className="fa fa-eraser" aria-hidden="true"></i> Limpiar</span>
-              </button>
-            </div>
+          <button onClick={this.onClickLimpiarDatos.bind(this)}
+            className="factigis_submitButton btn btn-info factigisBtnLimpiar" title="Limpiar campos " type="button" >
+            <span><i className="fa fa-eraser" aria-hidden="true"></i> Limpiar</span>
+          </button>
               <Modal isOpen={this.state.open} style={customStyles}>
                 <h2 className="factigis_h2">Factibilidad {this.state.numeroFactibilidad}</h2>
                 <p>{this.state.problemsforAdding}</p>
@@ -1491,7 +1664,7 @@ class Factigis_Add extends React.Component {
                 <br />
                 <button disabled={this.state.btnModalValidator} className="factigis_submitButton btn btn-info" onClick={this.closeModalValidator.bind(this)}>Close</button>
               </Modal>
-              </TabPanel>}
+        </TabPanel>}
 
         {/* Tab busquedas */}
         {this.state.showB && <TabPanel>

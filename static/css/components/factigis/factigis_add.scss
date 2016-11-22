@@ -3,6 +3,11 @@ $colorBackground: #2e353f;
 $colorCHQRED: #da291c;
 $colorGray: #808095;
 
+.notShow{
+	visibility: hidden;
+	display: none;
+}
+
 a {
 		color: $colorCHQRED;
 }
@@ -181,10 +186,30 @@ input[type="checkbox"]:checked + label:after {
   display: none;
 }
 
+.SeleccionUbicacion{
+  display: flex;
+  flex-direction: inherit;
+  align-items: center;
+
+}
+
+.paso4Special{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
 .factigis_btnSelectCliente{
   color: black;
   border-color: black;
+  /* color: crimson; */
+display: flex;
+/* border-color: red; */
+align-self: flex-start;
+justify-content: center;
 }
+
 .factigis_btnSelectCalle{
   color: black;
   border-color: black;
@@ -264,6 +289,49 @@ font-size: xx-small;
   background-color: #8c0000;
   border-color: #750000;
 }
+
+//15/11/2016
+.factigis_zonasGroup{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+}
+
+.factigis_liGroup{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-left: 1em;
+  margin-right: 1em;
+  width: 50%;
+}
+
+.factigis_listbox{
+  width: 95%;
+}
+
+.factigis_paso2{
+	//display: none;
+	visibility: hidden;
+}
+
+.factigis_paso3{
+  //display: none;
+		visibility: hidden;
+}
+
+.factigis_paso4{
+  //display: none;
+		visibility: hidden;
+}
+
+.factigis_paso5{
+//  display: none;
+	visibility: hidden;
+}
+
 //media screens for responsive design 'till 640px max'
 @media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: portrait)  {
   .factigis_ul{

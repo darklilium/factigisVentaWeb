@@ -260,7 +260,7 @@ class Factigis_AddDireccion extends React.Component {
               <h8>*Número:</h8>
               <input id="factigis_txtNumeroCalle" onChange={this.onChange} value={this.state.factigisNumeroCalle}   className="factigis-input factigis_input-solo" title="Escriba el número de la calle" type="text" placeholder="Número de la calle"  />
 
-              <h8>Anexo 1:</h8>
+              <h8>*Anexo 1:</h8>
               <input id="factigis_txtAnexo1" onChange={this.onChange} value={this.state.factigisAnexo1} className="factigis-input factigis_input-solo" title="Escriba alguna descripción del lugar" type="text" placeholder="Escriba alguna descripción del lugar"  />
             </div>
           </div>

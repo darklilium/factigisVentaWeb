@@ -3,7 +3,7 @@ import token from '../../services/token-service';
 
 function crearRectangulo(geometry,delta){
   var rectangulo = new esri.geometry.Polygon(new esri.SpatialReference(geometry.spatialReference));
-    rectangulo.addRing([ [geometry.x-1,geometry.y-1],[geometry.x-1,geometry.y+1],[geometry.x+1,geometry.y+1],[geometry.x+1,geometry.y-1],[geometry.x-1,geometry.y-1] ])
+    rectangulo.addRing([ [geometry.x-delta,geometry.y-delta],[geometry.x-1,geometry.y+delta],[geometry.x+1,geometry.y+delta],[geometry.x+delta,geometry.y-delta],[geometry.x-delta,geometry.y-delta] ])
 
 		return rectangulo;
 }
@@ -20,7 +20,7 @@ function factigis_findDireccion(geometry,callback){
   qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
 
   qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
-    console.log(featureSet.features.length);
+
     if(!featureSet.features.length){
       return callback([]);
     }
@@ -53,9 +53,9 @@ function factigis_findRotulo(geometry,callback){
   });
 }
 
-function factigis_findTramoBT(geometry, callback){
-  console.log("buscando en bt");
-  var myRectangulo = crearRectangulo(geometry,1);
+function factigis_findTramoBT(geometry, tipo, callback){
+  console.log("buscando en bt 2" , tipo);
+  var myRectangulo = crearRectangulo(geometry,5);
   var qTaskInterruptions = new esri.tasks.QueryTask(layers.read_chqTramosBT());
   var qInterruptions = new esri.tasks.Query();
 
@@ -63,11 +63,13 @@ function factigis_findTramoBT(geometry, callback){
   qInterruptions.outFields=["*"];
   qInterruptions.geometry = myRectangulo;
   qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
+  qInterruptions.where = "tipo ='" + tipo + "'";
 
   qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
     if(!featureSet.features.length){
       return callback([]);
     }
+    console.log("tramos bt: ",featureSet.features)
     return callback(featureSet.features);
 
 
@@ -77,9 +79,9 @@ function factigis_findTramoBT(geometry, callback){
   });
 }
 
-function factigis_findTramoMT(geometry,callback){
-  console.log("buscando en mt");
-  var myRectangulo = crearRectangulo(geometry,1);
+function factigis_findTramoMT(geometry, tipo, callback){
+  console.log("buscando en mt 2", tipo);
+  var myRectangulo = crearRectangulo(geometry,5);
   var qTaskInterruptions = new esri.tasks.QueryTask(layers.read_chqTramosMT());
   var qInterruptions = new esri.tasks.Query();
 
@@ -87,11 +89,12 @@ function factigis_findTramoMT(geometry,callback){
   qInterruptions.outFields=["*"];
   qInterruptions.geometry = myRectangulo;
   qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
-
+  qInterruptions.where = "ARCGIS2.DBO.Tramos_MT_006.tipo = '" + tipo + "'";
   qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
     if(!featureSet.features.length){
       return callback([]);
     }
+    console.log("tramos mt: ",featureSet.features)
     return callback(featureSet.features);
 
     //  console.log("en mt encontre:",featureSet);
@@ -101,13 +104,13 @@ function factigis_findTramoMT(geometry,callback){
   });
 }
 
-function factigis_findTramo(geometry, tramo, callback){
-  console.log(geometry,"esto es lo que tengo.");
+function factigis_findTramo(geometry, tramo, tipo , callback){
+
 
   //BUSCAR EN BT PRIMERO
   if(tramo=='BT'){
     console.log("buscando en bt...");
-    var btFound = factigis_findTramoBT(geometry, bt=>{
+    var btFound = factigis_findTramoBT(geometry, tipo, bt=>{
       if(!bt.length){
         console.log("no hay nada en bt");
         let redBT = [];
@@ -126,7 +129,7 @@ function factigis_findTramo(geometry, tramo, callback){
 
   //BUSCAR EN MT
   }else {
-    var mtFound = factigis_findTramoMT(geometry, mt=>{
+    var mtFound = factigis_findTramoMT(geometry, tipo, mt=>{
       if(!mt.length){
         console.log("no hay nada en mt");
         let redMT = [];
@@ -179,7 +182,7 @@ function factigis_findNewDireccion(geometry, callback){
   qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
 
   qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
-    console.log("EN NEW",featureSet.features.length);
+
     if(!featureSet.features.length){
       return callback([]);
     }

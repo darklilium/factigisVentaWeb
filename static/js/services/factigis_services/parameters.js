@@ -212,4 +212,45 @@ function saveGisredLogin(user, fech, page, mod, tkn){
   });
 }
 
-export {factigisLoginVentaWeb, getUserPermission, getProfile, saveGisredLogin, getFormatedDate};
+function getURLParameters(){
+
+
+/*  var user = {
+    factigisRut: '17091916-5',
+    factigisNombre: 'Eve',
+    factigisApellido: 'Hernandez Riquelme',
+    factigisTelefono: '984031884',
+    factigisEmail: 'e@live.cl',
+    factigis_selectedValueCliente: 'RESIDENCIAL',
+    factigis_selectedValueTipoContribuyente: 'PERSONA NATURAL'
+  }
+*/
+  var user = {
+    factigisRut: getURLParameter('rutCliente'),
+    factigisNombre: getURLParameter('nombre'),
+    factigisApellido:  getURLParameter('apellido'),
+    factigisTelefono:  getURLParameter('telefono'),
+    factigisEmail:  getURLParameter('email'),
+    factigis_selectedValueCliente:  getURLParameter('tpResidencia'),
+    factigis_selectedValueTipoContribuyente: getURLParameter('tpResidencia')
+  }
+
+  return user;
+}
+
+/*
+function initialize() {
+  coordSSEELong = getURLParameter('latSSEE');
+  coordSSEELat = getURLParameter('lonSSEE');
+  nomSSEESelected = getURLParameter('nombreSSEE');
+	customZoom = getURLParameter('zoom');
+  token =  getURLParameter('token');
+
+
+}
+*/
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [,""])[1].replace(/\+/g, '%20')) || null;
+}
+
+export {getURLParameters, factigisLoginVentaWeb, getUserPermission, getProfile, saveGisredLogin, getFormatedDate};

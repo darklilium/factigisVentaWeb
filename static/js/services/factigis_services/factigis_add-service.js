@@ -44,7 +44,7 @@ function factigis_addNuevaDireccion(newAddress, newGeometry, callback){
       token: token.read()
     };
 
-    if ( (newAddress['ANEXO1']=="") || (newAddress['ANEXO2']=="") || (newAddress['CALLE']=="") || (newAddress['NUMERO']=="") || (newAddress['TIPO_EDIFICACION']=="")  ){
+    if ( (newAddress['ANEXO1']=="") || (newAddress['CALLE']=="") || (newAddress['NUMERO']=="") || (newAddress['TIPO_EDIFICACION']=="")  ){
       return callback(false);
     }
 
@@ -128,7 +128,7 @@ function factigis_addNuevaFactibilidad(factibilidad, callbackadd){
                   factibilidad.factigisTipoFactibilidad = 'FACTIBILIDAD ASISTIDA';
                 }
         //agregar origen de factibilidad:
-                factibilidad.factigisOrigen = 'OFICINA COMERCIAL';
+                factibilidad.factigisOrigen = 'VENTA WEB';
 
         //si el empalme es subterraneo -> factibilidad ASISTIDA
           //2.- empalme subterráneo -> Asistida.
@@ -178,10 +178,14 @@ function factigis_addNuevaFactibilidad(factibilidad, callbackadd){
                       ID_Factibilidad: isDone[1],
                       Fecha_cambio: getFormatedDateNow(),
                       Observacion: "ESTADO INICIAL",
-                      Usuario:  usrprfl.USUARIO
+                      Usuario:  'REACT VENTA EMPALMES WEB USER'
                       }
                     agregarEstadoHistoria(historial, myhistorialCb =>{
                       console.log("hecho o no el historial",myhistorialCb);
+
+                    //agregar cookie para ventaweb.
+                    factibilidad.IDFactibilidad = isDone[1];
+                    cookieHandler.set('myttrbts ',factibilidad);
                       return callbackadd(pasar);
                     });
 
@@ -264,7 +268,7 @@ function factigis_addNuevaFactibilidad(factibilidad, callbackadd){
           }
 
         //Se agrega el origen de factibilidad:
-          factibilidad.factigisOrigen = 'OFICINA COMERCIAL';
+          factibilidad.factigisOrigen = 'VENTA WEB';
 
 
           console.log("Estoy con la siguiente factibilidad en mt",factibilidad.factigisTipoFactibilidad);
@@ -285,10 +289,15 @@ function factigis_addNuevaFactibilidad(factibilidad, callbackadd){
                   ID_Factibilidad: isDone[1],
                   Fecha_cambio: getFormatedDateNow(),
                   Observacion: "ESTADO INICIAL",
-                  Usuario:  usrprfl.USUARIO
+                  Usuario:  'VENTA WEB USER DEMO'
                   }
                 agregarEstadoHistoria(historial, myhistorialCb =>{
                   console.log("hecho o no el historial",myhistorialCb);
+
+                  //agregar cookie para ventaweb.
+                  factibilidad.IDFactibilidad = isDone[1];
+                  cookieHandler.set('myttrbts ',factibilidad);
+
                   return callbackadd(pasar);
                 });
               }else{

@@ -45,7 +45,7 @@ function makeSymbol(){
     makeTrackLine(){
       var mySymbol = new esri.symbol.CartographicLineSymbol(
         esri.symbol.CartographicLineSymbol.STYLE_SOLID,
-        new esri.Color([255,0,51,0.9]), 5,
+        new esri.Color([204,204,0,0.9]), 5,
         esri.symbol.CartographicLineSymbol.CAP_ROUND,
         esri.symbol.CartographicLineSymbol.JOIN_MITER, 5
       );
@@ -58,10 +58,10 @@ function makeSymbol(){
         20,
         new esri.symbol.SimpleLineSymbol(
           esri.symbol.SimpleLineSymbol.STYLE_SOLID,
-          new esri.Color([0, 14, 156, 5]),
+          new esri.Color([0, 0, 255, 5]),
           1
         ),
-        new esri.Color([0, 14, 156, 5])
+        new esri.Color([0, 0, 255, 5])
       );
 
       return mySymbol;
@@ -72,10 +72,10 @@ function makeSymbol(){
         20,
         new esri.symbol.SimpleLineSymbol(
           esri.symbol.SimpleLineSymbol.STYLE_SOLID,
-          new esri.Color([156, 0, 0, 5]),
+          new esri.Color([0, 255, 0, 0.8]),
           1
         ),
-        new esri.Color([156, 0, 0, 5])
+        new esri.Color([0, 255, 0, 0.8])
       );
 
       return mySymbol;
@@ -86,10 +86,10 @@ function makeSymbol(){
         20,
         new esri.symbol.SimpleLineSymbol(
           esri.symbol.SimpleLineSymbol.STYLE_SOLID,
-          new esri.Color([152, 0, 156, 1]),
+          new esri.Color([255, 0, 0, 0.8]),
           1
         ),
-        new esri.Color([152, 0, 156, 1])
+        new esri.Color([255, 0, 0, 0.8])
       );
 
       return mySymbol;

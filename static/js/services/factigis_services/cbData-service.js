@@ -54,8 +54,8 @@ var tipoPotencia = [
 ];
 
 var tipoEmpalmeBTMT = [
-	{ value: 'BT', label: 'BT' },
-	{ value: 'MT', label: 'MT' }
+	{ value: 'BT', label: 'BT (Baja Tensión: domicilios y pequeñas industrias)' },
+	{ value: 'MT', label: 'MT (Media Tensión: grandes industrias)' }
 ];
 
 

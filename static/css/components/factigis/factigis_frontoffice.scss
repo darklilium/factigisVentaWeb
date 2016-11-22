@@ -112,7 +112,8 @@ $factigis_bgColor : ghostwhite;
 }
 
 .factigis_search{
-      display: flex !important;
+  display: flex;
+  align-items: center;
 }
 .wrapper_factibilidadContent{
   display: flex;

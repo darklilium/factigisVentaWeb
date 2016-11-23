@@ -1103,7 +1103,9 @@ class Factigis_Add extends React.Component {
                     }
                   }
                 });
-              //  parent.document.getElementById('fgIdFactibilidad').value = cb[0];
+                console.log(this.state.factigisTipoFactibilidad);
+                console.log(this.state.factigisRotulo);
+                parent.document.getElementById('fgIdFactibilidad').value = cb[0];
                 window.close();
                 //GENERAR CARTA: guardar en cookie los parametros con que fue generada la factibilidad para crear la carta.
               //  let usrprfl = cookieHandler.get('usrprfl');
@@ -1220,7 +1222,10 @@ class Factigis_Add extends React.Component {
                       }
                     }
                   });
-                //  parent.document.getElementById('fgIdFactibilidad').value = cb[0];
+                  console.log(this.state.factigisTipoFactibilidad);
+                  console.log(this.state.factigisRotulo);
+                  parent.document.getElementById('fgIdFactibilidad').value = cb[0];
+
                   window.close();
                   //GENERAR CARTA
                 /*  let usrprfl = cookieHandler.get('usrprfl');

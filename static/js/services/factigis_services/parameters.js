@@ -214,8 +214,8 @@ function saveGisredLogin(user, fech, page, mod, tkn){
 
 function getURLParameters(){
 
-
-/*  var user = {
+/*
+  var user = {
     factigisRut: '17091916-5',
     factigisNombre: 'Eve',
     factigisApellido: 'Hernandez Riquelme',

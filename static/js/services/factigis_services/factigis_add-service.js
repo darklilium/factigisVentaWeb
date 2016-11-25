@@ -164,7 +164,7 @@ function factigis_addNuevaFactibilidad(factibilidad, callbackadd){
                 console.log("agregar lo siguiente a arcgis srv", factibilidad);
 
                 agregarFact(factibilidad,(isDone)=>{
-                console.log(isDone[0],"valor en agregarFact");
+                console.log(isDone[0],isDone[1],isDone[2],"valor en agregarFact");
                   if(isDone[0]){
                     console.log("pase ok, devolviendo a callbackadd");
                     let pasar = [];
@@ -276,12 +276,13 @@ function factigis_addNuevaFactibilidad(factibilidad, callbackadd){
           console.log("agregar lo siguiente a arcgis srv", factibilidad);
 
             agregarFact(factibilidad,(isDone)=>{
-              console.log(isDone[0],"valor en agregarFact");
+              console.log(isDone[0],isDone[1],isDone[2],"valor en agregarFact");
               if(isDone[0]){
                 let pasar = [];
                 pasar.push(true);
                 pasar.push(isDone[1]);
                 pasar.push(isDone[2]);
+              
                 let usrprfl = cookieHandler.get('usrprfl');
 
                 let historial = {

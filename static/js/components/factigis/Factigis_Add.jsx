@@ -1103,9 +1103,23 @@ class Factigis_Add extends React.Component {
                     }
                   }
                 });
-                console.log(this.state.factigisTipoFactibilidad);
-                console.log(this.state.factigisRotulo);
-                parent.document.getElementById('fgIdFactibilidad').value = cb[0];
+                console.log(cb, "devolviendo esto para venta empalme");
+                console.log("----------");
+                console.log("id:",cb[1], "tipo fact:", cb[2]['Tipo_factibilidad'], "rotulo:",cb[2]['Rotulo']);
+                console.log("----------");
+                //OBJECTID
+                parent.document.getElementById('fgIdFactibilidad').value = cb[1];
+                //TIPO FACTIBILIDAD.
+                console.log(cb[2]['Tipo_factibilidad'],"tipo factibilidad");
+                if(cb[2]['Tipo_factibilidad']=="FACTIBILIDAD DIRECTA"){
+                  parent.document.getElementById('fgBoFactibilidad ').value = 1;
+                }else{
+                  parent.document.getElementById('fgBoFactibilidad ').value = 2;
+                }
+
+                //ROTULO PSOTE / CAMARA
+                parent.document.getElementById('numeroPosteCamara ').value = cb[2]['Rotulo'];
+
                 window.close();
                 //GENERAR CARTA: guardar en cookie los parametros con que fue generada la factibilidad para crear la carta.
               //  let usrprfl = cookieHandler.get('usrprfl');
@@ -1222,9 +1236,22 @@ class Factigis_Add extends React.Component {
                       }
                     }
                   });
-                  console.log(this.state.factigisTipoFactibilidad);
-                  console.log(this.state.factigisRotulo);
-                  parent.document.getElementById('fgIdFactibilidad').value = cb[0];
+                  console.log(cb, "devolviendo esto para venta empalme");
+                  console.log("----------");
+                  console.log("id:",cb[1], "tipo fact:", cb[2]['Tipo_factibilidad'], "rotulo:",cb[2]['Rotulo']);
+                  console.log("----------");
+                  //OBJECTID
+                  parent.document.getElementById('fgIdFactibilidad').value = cb[1];
+                  //TIPO FACTIBILIDAD.
+                  console.log(cb[2]['Tipo_factibilidad'],"tipo factibilidad");
+                  if(cb[2]['Tipo_factibilidad']=="FACTIBILIDAD DIRECTA"){
+                    parent.document.getElementById('fgBoFactibilidad ').value = 1;
+                  }else{
+                    parent.document.getElementById('fgBoFactibilidad ').value = 2;
+                  }
+
+                  //ROTULO PSOTE / CAMARA
+                  parent.document.getElementById('numeroPosteCamara ').value = cb[2]['Rotulo'];
 
                   window.close();
                   //GENERAR CARTA
